@@ -99,22 +99,29 @@ class ExtensionlistController extends ActionController
         $insecureExtensions = $this->extensionlistRepository->findByReviewState(-1);
         $insecureExtensionsAndVersionCsv = $this->convertVersionsToCommaSeparatedValues($insecureExtensions);
 
-        $lastUpdated = $this->extensionlistRepository->findLastUpdatedExtension()->toArray();
-        $lastUpdated = $lastUpdated[0]->getLastUpdated();
+        // Determine status of extension list by retrieving most recent record
+        $lastUpdated = $this->extensionlistRepository->findLastUpdatedExtension();
 
-        $this->view->assignMultiple(
-            array(
-                'configurationFileHostName' => GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY'),
-                'configurationFileDate' => date('Ymd'),
-                'configurationFileDateHumanReadable' => date('d/M/Y'),
-                'configurationFileDateTimestamp' => time(),
-                'configurationFileIdentifier' => $this->getConfigurationFileId($insecureExtensionsAndVersionCsv),
-                'extensionCountLastUpdated' => $lastUpdated,
-                'extensionCountInsecureExtensions' => count($insecureExtensionsAndVersionCsv),
-                'extensionCountInsecureVersions' => $insecureExtensions->count(),
-                'extensionlist' => $insecureExtensionsAndVersionCsv
-            )
-        );
+        // Make sure, extension list is not empty
+        if (is_object($lastUpdated) && $lastUpdated->count() > 0) {
+            $lastUpdated = $lastUpdated->getFirst()->getLastUpdated();
+            $this->view->assignMultiple(
+                array(
+                    'configurationError' => false,
+                    'configurationFileHostName' => GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY'),
+                    'configurationFileDate' => date('Ymd'),
+                    'configurationFileDateHumanReadable' => date('d/M/Y'),
+                    'configurationFileDateTimestamp' => time(),
+                    'configurationFileIdentifier' => $this->getConfigurationFileId($insecureExtensionsAndVersionCsv),
+                    'extensionCountLastUpdated' => $lastUpdated,
+                    'extensionCountInsecureExtensions' => count($insecureExtensionsAndVersionCsv),
+                    'extensionCountInsecureVersions' => $insecureExtensions->count(),
+                    'extensionlist' => $insecureExtensionsAndVersionCsv
+                )
+            );
+        } else {
+            $this->view->assign('configurationError', true);
+        }
     }
 
     /**
