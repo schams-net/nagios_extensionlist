@@ -33,17 +33,3 @@ ExtensionUtility::configurePlugin(
         'Extensionlist' => 'listInsecureExtensions',
     )
 );
-
-// logging
-$logging = array(
-    LogLevel::INFO => array(
-        'TYPO3\CMS\Core\Log\Writer\FileWriter' => array(
-            'logFile' => 'typo3temp/logs/' . date('Ymd') . '.' . $extensionName . '.log'
-        )
-    )
-);
-
-// ...
-$GLOBALS['TYPO3_CONF_VARS']['LOG']['SchamsNet'][$extensionName]['Controller']['writerConfiguration'] = $logging;
-
-unset($logging);

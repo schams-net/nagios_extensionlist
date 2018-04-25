@@ -44,14 +44,6 @@ class ExtensionlistController extends ActionController
     protected $accesshistoryRepository;
 
     /**
-     * TYPO3 Logging API
-     *
-     * @access private
-     * @var $logger \TYPO3\CMS\Core\Log\Logger
-     */
-    private $logger;
-
-    /**
      * Constructor
      *
      * @access public
@@ -59,8 +51,6 @@ class ExtensionlistController extends ActionController
      */
     public function __construct()
     {
-        /** @var $logger \TYPO3\CMS\Core\Log\Logger */
-        $this->logger = GeneralUtility::makeInstance('TYPO3\CMS\Core\Log\LogManager')->getLogger(__CLASS__);
     }
 
     /**
