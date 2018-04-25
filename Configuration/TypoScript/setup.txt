@@ -22,7 +22,13 @@ plugin.tx_nagiosextensionlist {
 
 config {
   disableAllHeaderCode = 1
-  additionalHeaders = Content-type:text/plain
+  additionalHeaders {
+    10 {
+      header = Content-type: text/plain
+      replace = 0
+    }
+  }
+
   admPanel = 0
 
   # EXT:sourceopt destroys text/plain documents
