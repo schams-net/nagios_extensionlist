@@ -36,4 +36,4 @@ http://www.gnu.org/copyleft/gpl.html
 
 ## Author
 
-Michael Schams <[schams.net]{https://schams.net)>
+Michael Schams <[schams.net](https://schams.net)>
