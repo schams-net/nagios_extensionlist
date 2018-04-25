@@ -18,12 +18,13 @@ use \TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
 $extensionKey = 'nagios_extensionlist';
 $extensionPath = ExtensionManagementUtility::extPath($extensionKey);
-$tableName = 'tx_nagiosextensionslist_accesshistory';
+$tableName = 'tx_nagiosextensionlist_domain_model_accesshistory';
+$tableNameSimplified = 'tx_nagiosextensionslist_accesshistory';
 $languageFile = $extensionKey . '/Resources/Private/Language/locallang.db.xlf';
 
 return array(
     'ctrl' => array(
-        'title' => 'LLL:EXT:' . $languageFile . ':' . $tableName . '.title',
+        'title' => 'LLL:EXT:' . $languageFile . ':' . $tableNameSimplified . '.title',
         'label' => 'remote_address',
         'label_alt' => 'x_forwarded_for',
         'tstamp' => 'tstamp',
@@ -36,7 +37,7 @@ return array(
         ),
         'readonly' => 1,
         'searchFields' => 'remove_address,x_forwarded_for',
-        'dynamicConfigFile' => $extensionPath . 'Configuration/TCA/' . $tableName . '.php',
+        'dynamicConfigFile' => $extensionPath . 'Configuration/TCA/' . $tableNameSimplified . '.php',
         'iconfile' => 'EXT:' . $extensionKey . '/Resources/Public/Icons/' . $tableName . '.png'
     ),
     'interface' => array(
@@ -87,7 +88,7 @@ return array(
         ),
         'remote_address' => array(
             'exclude' => 0,
-            'label' => 'LLL:EXT:' . $languageFile . ':' . $tableName . '.remote_address',
+            'label' => 'LLL:EXT:' . $languageFile . ':' . $tableNameSimplified . '.remote_address',
             'config' => array(
                 'type' => 'input',
                 'size' => '30',
@@ -97,7 +98,7 @@ return array(
         ),
         'x_forwarded_for' => array(
             'exclude' => 0,
-            'label' => 'LLL:EXT:' . $languageFile . ':' . $tableName . '.x_forwarded_for',
+            'label' => 'LLL:EXT:' . $languageFile . ':' . $tableNameSimplified . '.x_forwarded_for',
             'config' => array(
                 'type' => 'input',
                 'size' => '30',
@@ -107,7 +108,7 @@ return array(
         ),
         'country_code' => array(
             'exclude' => 0,
-            'label' => 'LLL:EXT:' . $languageFile . ':' . $tableName . '.country_code',
+            'label' => 'LLL:EXT:' . $languageFile . ':' . $tableNameSimplified . '.country_code',
             'config' => array(
                 'type' => 'input',
                 'size' => '30',
@@ -117,7 +118,7 @@ return array(
         ),
         'nagios_plugin_version' => array(
             'exclude' => 0,
-            'label' => 'LLL:EXT:' . $languageFile . ':' . $tableName . '.nagios_plugin_version',
+            'label' => 'LLL:EXT:' . $languageFile . ':' . $tableNameSimplified . '.nagios_plugin_version',
             'config' => array(
                 'type' => 'input',
                 'size' => '30',
@@ -127,7 +128,7 @@ return array(
         ),
         'nagios_version' => array(
             'exclude' => 0,
-            'label' => 'LLL:EXT:' . $languageFile . ':' . $tableName . '.nagios_version',
+            'label' => 'LLL:EXT:' . $languageFile . ':' . $tableNameSimplified . '.nagios_version',
             'config' => array(
                 'type' => 'input',
                 'size' => '30',
@@ -137,7 +138,7 @@ return array(
         ),
         'useragent' => array(
             'exclude' => 0,
-            'label' => 'LLL:EXT:' . $languageFile . ':' . $tableName . '.useragent',
+            'label' => 'LLL:EXT:' . $languageFile . ':' . $tableNameSimplified . '.useragent',
             'config' => array(
                 'type' => 'input',
                 'size' => '30',
@@ -147,7 +148,7 @@ return array(
         ),
         'request' => array(
             'exclude' => 0,
-            'label' => 'LLL:EXT:' . $languageFile . ':' . $tableName . '.request',
+            'label' => 'LLL:EXT:' . $languageFile . ':' . $tableNameSimplified . '.request',
             'config' => array(
                 'type' => 'input',
                 'size' => '30',
