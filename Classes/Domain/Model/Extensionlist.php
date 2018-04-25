@@ -15,10 +15,12 @@ namespace SchamsNet\NagiosExtensionlist\Domain\Model;
  * https://www.gnu.org/licenses/gpl.html
  */
 
+use \TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+
 /**
  * Model: Extensionlist
  */
-class Extensionlist extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
+class Extensionlist extends AbstractEntity
 {
     /**
      * @var string

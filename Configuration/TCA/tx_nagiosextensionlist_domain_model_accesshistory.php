@@ -14,12 +14,16 @@
  * https://www.gnu.org/licenses/gpl.html
  */
 
-$extensionKey = 'nagios_extensionlist';
-$extensionPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extensionKey);
+use \TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
-return array (
+$extensionKey = 'nagios_extensionlist';
+$extensionPath = ExtensionManagementUtility::extPath($extensionKey);
+$tableName = 'tx_nagiosextensionslist_accesshistory';
+$languageFile = $extensionKey . '/Resources/Private/Language/locallang.db.xlf';
+
+return array(
     'ctrl' => array(
-        'title' => 'LLL:EXT:' . $extensionKey . '/Resources/Private/Language/locallang.db.xlf:tx_nagiosextensionslist_accesshistory.title',
+        'title' => 'LLL:EXT:' . $languageFile . ':' . $tableName . '.title',
         'label' => 'remote_address',
         'label_alt' => 'x_forwarded_for',
         'tstamp' => 'tstamp',
@@ -32,91 +36,119 @@ return array (
         ),
         'readonly' => 1,
         'searchFields' => 'remove_address,x_forwarded_for',
-//        'dynamicConfigFile' => $extensionPath . 'Configuration/TCA/tx_nagiosextensionlist_domain_model_accesshistory.php',
-        'iconfile' => 'EXT:' . $extensionKey . '/Resources/Public/Icons/tx_nagiosextensionlist_domain_model_accesshistory.png'
+        'dynamicConfigFile' => $extensionPath . 'Configuration/TCA/' . $tableName . '.php',
+        'iconfile' => 'EXT:' . $extensionKey . '/Resources/Public/Icons/' . $tableName . '.png'
     ),
-    'interface' => array (
-        'showRecordFieldList' => 'hidden,remote_address,x_forwarded_for,country_code,nagios_plugin_version,nagios_version,useragent,request'
+    'interface' => array(
+        'showRecordFieldList' => implode(
+            ',',
+            array(
+                'hidden',
+                'remote_address',
+                'x_forwarded_for',
+                'country_code',
+                'nagios_plugin_version',
+                'nagios_version',
+                'useragent',
+                'request'
+            )
+        )
     ),
-    'types' => array (
-        '0' => array('showitem' => 'hidden;;1;;1-1-1,remote_address,x_forwarded_for,country_code,nagios_plugin_version,nagios_version,useragent,request')
+    'types' => array(
+        '0' => array(
+            'showitem' => implode(
+                ',',
+                array(
+                    'hidden;;1;;1-1-1',
+                    'remote_address',
+                    'x_forwarded_for',
+                    'country_code',
+                    'nagios_plugin_version',
+                    'nagios_version',
+                    'useragent',
+                    'request'
+                )
+            )
+        )
     ),
-    'palettes' => array (
-        '1' => array('showitem' => '')
+    'palettes' => array(
+        '1' => array(
+            'showitem' => ''
+        )
     ),
-    'columns' => array (
-        'hidden' => array (
+    'columns' => array(
+        'hidden' => array(
             'exclude' => 1,
             'label'   => 'LLL:EXT:lang/locallang_general.xml:LGL.hidden',
-            'config'  => array (
+            'config'  => array(
                 'type'    => 'check',
                 'default' => '0'
             )
         ),
-        'remote_address' => array (
+        'remote_address' => array(
             'exclude' => 0,
-            'label' => 'LLL:EXT:nagios_extensionlist/Resources/Private/Language/locallang.db.xlf:tx_nagiosextensionslist_accesshistory.remote_address',
-            'config' => array (
+            'label' => 'LLL:EXT:' . $languageFile . ':' . $tableName . '.remote_address',
+            'config' => array(
                 'type' => 'input',
                 'size' => '30',
                 'max' => '250',
                 'eval' => 'required,trim',
             )
         ),
-        'x_forwarded_for' => array (
+        'x_forwarded_for' => array(
             'exclude' => 0,
-            'label' => 'LLL:EXT:nagios_extensionlist/Resources/Private/Language/locallang.db.xlf:tx_nagiosextensionslist_accesshistory.x_forwarded_for',
-            'config' => array (
+            'label' => 'LLL:EXT:' . $languageFile . ':' . $tableName . '.x_forwarded_for',
+            'config' => array(
                 'type' => 'input',
                 'size' => '30',
                 'max' => '250',
                 'eval' => 'required,trim',
             )
         ),
-        'country_code' => array (
+        'country_code' => array(
             'exclude' => 0,
-            'label' => 'LLL:EXT:nagios_extensionlist/Resources/Private/Language/locallang.db.xlf:tx_nagiosextensionslist_accesshistory.country_code',
-            'config' => array (
+            'label' => 'LLL:EXT:' . $languageFile . ':' . $tableName . '.country_code',
+            'config' => array(
                 'type' => 'input',
                 'size' => '30',
                 'max' => '250',
                 'eval' => 'required,trim',
             )
         ),
-        'nagios_plugin_version' => array (
+        'nagios_plugin_version' => array(
             'exclude' => 0,
-            'label' => 'LLL:EXT:nagios_extensionlist/Resources/Private/Language/locallang.db.xlf:tx_nagiosextensionslist_accesshistory.nagios_plugin_version',
-            'config' => array (
+            'label' => 'LLL:EXT:' . $languageFile . ':' . $tableName . '.nagios_plugin_version',
+            'config' => array(
                 'type' => 'input',
                 'size' => '30',
                 'max' => '250',
                 'eval' => 'required,trim',
             )
         ),
-        'nagios_version' => array (
+        'nagios_version' => array(
             'exclude' => 0,
-            'label' => 'LLL:EXT:nagios_extensionlist/Resources/Private/Language/locallang.db.xlf:tx_nagiosextensionslist_accesshistory.nagios_version',
-            'config' => array (
+            'label' => 'LLL:EXT:' . $languageFile . ':' . $tableName . '.nagios_version',
+            'config' => array(
                 'type' => 'input',
                 'size' => '30',
                 'max' => '250',
                 'eval' => 'required,trim',
             )
         ),
-        'useragent' => array (
+        'useragent' => array(
             'exclude' => 0,
-            'label' => 'LLL:EXT:nagios_extensionlist/Resources/Private/Language/locallang.db.xlf:tx_nagiosextensionslist_accesshistory.useragent',
-            'config' => array (
+            'label' => 'LLL:EXT:' . $languageFile . ':' . $tableName . '.useragent',
+            'config' => array(
                 'type' => 'input',
                 'size' => '30',
                 'max' => '250',
                 'eval' => 'required,trim',
             )
         ),
-        'request' => array (
+        'request' => array(
             'exclude' => 0,
-            'label' => 'LLL:EXT:nagios_extensionlist/Resources/Private/Language/locallang.db.xlf:tx_nagiosextensionslist_accesshistory.request',
-            'config' => array (
+            'label' => 'LLL:EXT:' . $languageFile . ':' . $tableName . '.request',
+            'config' => array(
                 'type' => 'input',
                 'size' => '30',
                 'max' => '250',

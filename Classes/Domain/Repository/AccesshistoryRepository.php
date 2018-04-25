@@ -15,9 +15,11 @@ namespace SchamsNet\NagiosExtensionlist\Domain\Repository;
  * https://www.gnu.org/licenses/gpl.html
  */
 
+use \TYPO3\CMS\Extbase\Persistence\Repository;
+
 /**
  * Repository: Accesshistory
  */
-class AccesshistoryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
+class AccesshistoryRepository extends Repository
 {
 }

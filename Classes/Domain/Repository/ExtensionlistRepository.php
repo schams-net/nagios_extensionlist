@@ -15,10 +15,14 @@ namespace SchamsNet\NagiosExtensionlist\Domain\Repository;
  * https://www.gnu.org/licenses/gpl.html
  */
 
+use \TYPO3\CMS\Extbase\Persistence\QueryInterface;
+use \TYPO3\CMS\Extbase\Persistence\Repository;
+use \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
+
 /**
  * Repository: Extensionlist
  */
-class ExtensionlistRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
+class ExtensionlistRepository extends Repository
 {
     /**
      * Set default ordering for the entire repository
@@ -26,8 +30,8 @@ class ExtensionlistRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
      * @var array
      */
     protected $defaultOrderings = array(
-        'extension_key' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING,
-        'integer_version' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING
+        'extension_key' => QueryInterface::ORDER_ASCENDING,
+        'integer_version' => QueryInterface::ORDER_ASCENDING
     );
 
     /**
@@ -39,7 +43,7 @@ class ExtensionlistRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
     public function initializeObject()
     {
         /** @var $querySettings \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings */
-        $querySettings = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings');
+        $querySettings = $this->objectManager->get('TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings');
         $this->setDefaultQuerySettings($querySettings);
     }
 
@@ -49,9 +53,10 @@ class ExtensionlistRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
      * @access public
      * @return stdObject
      */
-    public function findLastUpdatedExtension() {
+    public function findLastUpdatedExtension()
+    {
         $query = $this->createQuery();
-        $query->setOrderings(array('last_updated' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_DESCENDING));
+        $query->setOrderings(array('last_updated' => QueryInterface::ORDER_DESCENDING));
         $query->setLimit(1);
         return $query->execute();
     }

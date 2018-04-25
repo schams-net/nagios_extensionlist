@@ -15,10 +15,12 @@ namespace SchamsNet\NagiosExtensionlist\Domain\Model;
  * https://www.gnu.org/licenses/gpl.html
  */
 
+use \TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+
 /**
  * Model: Accesshistory
  */
-class Accesshistory extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
+class Accesshistory extends AbstractEntity
 {
     /**
      * @var string

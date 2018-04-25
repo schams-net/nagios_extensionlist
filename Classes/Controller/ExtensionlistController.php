@@ -16,11 +16,16 @@ namespace SchamsNet\NagiosExtensionlist\Controller;
  */
 
 use \TYPO3\CMS\Core\Utility\GeneralUtility;
+use \TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
+
+use \SchamsNet\NagiosExtensionlist\Domain\Repository\AccesshistoryRepository;
+use \SchamsNet\NagiosExtensionlist\Domain\Repository\ExtensionlistRepository;
 
 /**
  * Extensionlist Controller
  */
-class ExtensionlistController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
+class ExtensionlistController extends ActionController
 {
     /**
      * Extensionlist Repository
@@ -55,33 +60,33 @@ class ExtensionlistController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCo
     public function __construct()
     {
         /** @var $logger \TYPO3\CMS\Core\Log\Logger */
-        $this->logger = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Core\Log\LogManager')->getLogger(__CLASS__);
+        $this->logger = GeneralUtility::makeInstance('TYPO3\CMS\Core\Log\LogManager')->getLogger(__CLASS__);
     }
 
     /**
-     * Inject Extensionlist Repository
+     * Inject Extensionlist Repository.
      *
      * @access public
      * @param \SchamsNet\NagiosExtensionlist\Domain\Repository\ExtensionlistRepository $extensionlistRepository
      */
-    public function injectExtensionlistRepository(\SchamsNet\NagiosExtensionlist\Domain\Repository\ExtensionlistRepository $extensionlistRepository)
+    public function injectExtensionlistRepository(ExtensionlistRepository $extensionlistRepository)
     {
         $this->extensionlistRepository = $extensionlistRepository;
     }
 
     /**
-     * Inject Accesshistory Repository
+     * Inject Accesshistory Repository.
      *
      * @access public
      * @param \SchamsNet\NagiosExtensionlist\Domain\Repository\AccesshistoryRepository $accesshistoryRepository
      */
-    public function injectAccesshistoryRepository(\SchamsNet\NagiosExtensionlist\Domain\Repository\AccesshistoryRepository $accesshistoryRepository)
+    public function injectAccesshistoryRepository(AccesshistoryRepository $accesshistoryRepository)
     {
         $this->accesshistoryRepository = $accesshistoryRepository;
     }
 
     /**
-     * Generates list of insecure extensions
+     * Generates list of insecure extensions.
      *
      * @access public
      * @return void
@@ -113,19 +118,18 @@ class ExtensionlistController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCo
     }
 
     /**
-     * Returns an array of extensions (key) and comma-separated-list of versions (value)
+     * Returns an array of extensions (key) and comma-separated-list of versions (value).
      *
      * @access private
      * @param TYPO3\CMS\Extbase\Persistence\Generic\QueryResult Insecure extensions
      * @return array
      */
-    private function convertVersionsToCommaSeparatedValues($insecureExtensions) {
-
+    private function convertVersionsToCommaSeparatedValues($insecureExtensions)
+    {
         // init
         $extensionlist = array();
 
         foreach ($insecureExtensions as $uid => $extension) {
-
             $key = $extension->getExtensionKey();
             $title = $extension->getTitle();
             $version = $extension->getVersion();
@@ -147,31 +151,28 @@ class ExtensionlistController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCo
     }
 
     /**
-     * Returns a unique identification string based on the current list of insecure extensions, e.g. '54391-C872F-E1C8B-4F980'
+     * Returns a unique identification string based on the current list of insecure extensions.
+     * FOr example: '54391-C872F-E1C8B-4F980'.
      *
      * @access private
      * @param array Insecure extensions and version
      * @return string Identification string
      */
-    private function getConfigurationFileId(array $insecureExtensionsAndVersionCsv) {
+    private function getConfigurationFileId(array $insecureExtensionsAndVersionCsv)
+    {
         $identificationString = '-';
         $identificationArray = str_split(substr(md5(serialize($insecureExtensionsAndVersionCsv)), 0, 20), 5);
         return strtoupper(implode('-', $identificationArray));
     }
 
     /**
-     * Stores details of client accessing the instance as an access history record
+     * Stores details of client accessing the instance as an access history record.
      *
      * @access private
      * @return void
      */
-    private function storeClientDetails() {
-
-        /*
-            'nagios_plugin_version' =>  preg_replace('/[^0-9\.]/', '', t3lib_div::_GP('npv')),
-            'nagios_version' =>         preg_replace('/[^0-9\.]/', '', t3lib_div::_GP('nv')),
-        */
-
+    private function storeClientDetails()
+    {
         $accesshistory = $this->objectManager->get('SchamsNet\\NagiosExtensionlist\\Domain\\Model\\Accesshistory');
         $accesshistory->setRemoteAddress(GeneralUtility::getIndpEnv('REMOTE_ADDR'));
         $accesshistory->setXForwardedFor($this->extractFromHttpHeader(array('X-FORWARDED-FOR')));
@@ -180,20 +181,19 @@ class ExtensionlistController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCo
         $accesshistory->setNagiosVersion('');
         $accesshistory->setUseragent($this->extractFromHttpHeader(array('USER_AGENT')));
         $accesshistory->setRequest(GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'));
-
         $this->accesshistoryRepository->add($accesshistory);
-
-        $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager')->persistAll();
+        $this->objectManager->get('TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager')->persistAll();
     }
 
     /**
      * Returns the given HTTP header, if it exists
      *
      * @access private
-     * @param array List of HTTP headers to search for. Must be upper case and without leading 'HTTP_' e.g. 'USER_AGENT'.
+     * @param array List of HTTP headers to search for. Must be upper case and without leading 'HTTP_' e.g. 'USER_AGENT'
      * @return string Value of the HTTP header if found
      */
-    private function extractFromHttpHeader(array $httpHeader = array()) {
+    private function extractFromHttpHeader(array $httpHeader = array())
+    {
         foreach ($_SERVER as $httpHeaderKey => $httpHeaderValue) {
             $httpHeaderKey = preg_replace('/^HTTP_/', '', trim(strtoupper($httpHeaderKey)));
             if (is_string($httpHeaderKey) && !empty($httpHeaderKey)

@@ -14,10 +14,16 @@
  * https://www.gnu.org/licenses/gpl.html
  */
 
-$extensionName = \TYPO3\CMS\Core\Utility\GeneralUtility::underscoredToUpperCamelCase($_EXTKEY);
+use \TYPO3\CMS\Core\Log\LogLevel;
+use \TYPO3\CMS\Core\Log\Writer\FileWriter;
+use \TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use \TYPO3\CMS\Core\Utility\GeneralUtility;
+use \TYPO3\CMS\Extbase\Utility\ExtensionUtility;
+
+$extensionName = GeneralUtility::underscoredToUpperCamelCase($_EXTKEY);
 $pluginName = strtolower($extensionName);
 
-\TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
+ExtensionUtility::configurePlugin(
     'SchamsNet.' . $_EXTKEY,
     $pluginName,
     array(
@@ -28,19 +34,10 @@ $pluginName = strtolower($extensionName);
     )
 );
 
-$extensionPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY);
-$typoScript = $extensionPath . 'Configuration/TypoScript/setup.txt';
-
-#if (is_readable($typoScript)) {
-#   \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScriptSetup(
-#      file_get_contents($typoScript)
-#    );
-#}
-
 // logging
 $logging = array(
-    \TYPO3\CMS\Core\Log\LogLevel::INFO => array(
-        'TYPO3\\CMS\\Core\\Log\\Writer\\FileWriter' => array(
+    LogLevel::INFO => array(
+        'TYPO3\CMS\Core\Log\Writer\FileWriter' => array(
             'logFile' => 'typo3temp/logs/' . date('Ymd') . '.' . $extensionName . '.log'
         )
     )
