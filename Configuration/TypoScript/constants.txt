@@ -1,0 +1,10 @@
+plugin.tx_nagiosextensionlist {
+  view {
+    # cat=plugin.tx_nagiosextensionlist/file; type=string; label=Path to template root (FE)
+    templateRootPath = EXT:nagios_extensionlist/Resources/Private/Templates/
+    # cat=plugin.tx_nagiosextensionlist/file; type=string; label=Path to template partials (FE)
+    partialRootPath = EXT:nagios_extensionlist/Resources/Private/Partials/
+    # cat=plugin.tx_nagiosextensionlist/file; type=string; label=Path to template layouts (FE)
+    layoutRootPath = EXT:nagios_extensionlist/Resources/Private/Layouts/
+  }
+}

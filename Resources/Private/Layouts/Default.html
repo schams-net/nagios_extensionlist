@@ -1,0 +1,185 @@
+# Nagios: TYPO3 Monitoring - configuration file (check_typo3.cfg)
+# This configuration file was automatically generated and lists insecure TYPO3
+# extensions based on the official classification by the TYPO3 Security Team.
+#
+# Generated on host {configurationFileHostName}, {configurationFileDateHumanReadable}
+#
+# Read the full documentation at: https://schams.net/nagios
+# TYPO3 Extension Repository: https://typo3.org/extensions/repository
+# Nagios: http://nagios.org/
+#
+# (c) 2011-2017 Michael Schams (schams.net)
+# All rights reserved
+#
+# This script is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# The GNU General Public License can be found at
+# http://www.gnu.org/copyleft/gpl.html
+#
+# This script is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# This copyright notice MUST APPEAR in all copies of the script!
+#
+# Please see TYPO3 and Nagios licenses.
+# ------------------------------------------------------------------------------
+# Configuration file meta data
+# ------------------------------------------------------------------------------
+
+nagios-typo3-configuration.id = {configurationFileIdentifier}
+nagios-typo3-configuration.server = {configurationFileHostName}
+nagios-typo3-configuration.date = {configurationFileDate}
+nagios-typo3-configuration.timestamp = {configurationFileDateTimestamp}
+
+extensionlist.count.latest-extension-upload.date = <f:format.date format="Ymd">{extensionCountLastUpdated}</f:format.date>
+extensionlist.count.latest-extension-upload.timestamp = <f:format.date format="U">{extensionCountLastUpdated}</f:format.date>
+extensionlist.count.insecure-extensions = {extensionCountInsecureExtensions}
+extensionlist.count.insecure-extension-versions = {extensionCountInsecureVersions}
+
+# Compatibility list (TYPO3 Extension "Nagios")
+typo3-nagios-extension-compatibility-list = 1.0.0,1.2.0,1.2.1,1.2.2,1.2.3,1.2.4,1.2.5,1.2.6,1.2.7,1.2.8,1.2.9,1.2.10,1.2.11,2.0.0,2.0.1,2.0.2,2.1.0
+
+# ------------------------------------------------------------------------------
+# TYPO3 core versions
+# ------------------------------------------------------------------------------
+# Syntax: typo3-version.<STATE> = <comma separated list of versions>
+
+# TYPO3 version 1.x: obsolete
+typo3-version.critical = 1,1.x,1.x.x
+
+# TYPO3 version 2.x: obsolete
+typo3-version.critical = 2,2.x,2.x.x
+
+# TYPO3 version 3.x: obsolete
+typo3-version.critical = 3,3.x,3.x.x
+
+# TYPO3 version 4.0: obsolete
+typo3-version.critical = 4.0.x
+
+# TYPO3 version 4.1: obsolete
+typo3-version.critical = 4.1.x
+
+# TYPO3 version 4.2: obsolete
+# This version reached its end of support and no security patches will be released
+# An update to a TYPO3 CMS version that is still maintained is recommended
+typo3-version.critical = 4.2.x
+
+# TYPO3 version 4.3: obsolete
+# This version reached its end of support and no security patches will be released
+# An update to a TYPO3 CMS version that is still maintained is recommended
+typo3-version.critical = 4.3.x
+
+# TYPO3 version 4.4: obsolete
+# This version reached its end of support and no security patches will be released
+# An update to a TYPO3 CMS version that is still maintained is recommended
+typo3-version.critical = 4.4.x
+
+# TYPO3 version 4.5: obsolete
+# This version reached its end of support and no security patches will be released
+# An update to a TYPO3 CMS version that is still maintained is recommended
+# However we have classified this as a WARNING only, because some agencies have
+# Extended Long-Term-Support Plans with the TYPO3 Association.
+# https://typo3.org/news/article/announcing-typo3-cms-45-extended-long-term-support-plans/
+typo3-version.critical = 4.5.x
+
+# TYPO3 version 4.6: obsolete
+# This version reached its end of support and no security patches will be released
+# An update to a TYPO3 CMS version that is still maintained is recommended
+typo3-version.critical = 4.6.x
+
+# TYPO3 version 4.7: current development release (for developers only)
+# This version reached its end of support and no security patches will be released
+# An update to a TYPO3 CMS version that is still maintained is recommended
+typo3-version.critical = 4.7.x
+
+# TYPO3 version 6.0: obsolete
+# This version reached its end of support and no security patches will be released
+# An update to a TYPO3 CMS version that is still maintained is recommended
+typo3-version.critical = 6.0.x
+
+# TYPO3 version 6.1: obsolete
+# This version reached its end of support and no security patches will be released
+# An update to a TYPO3 CMS version that is still maintained is recommended
+typo3-version.critical = 6.1.x
+
+# TYPO3 version 6.2: old stable LTS release
+# This version reached its end of support and no security patches will be released
+# An update to a TYPO3 CMS version that is still maintained is recommended
+# However we have classified this as a WARNING only, because some agencies have
+# Extended Long-Term-Support Plans with the TYPO3 Association / TYPO3 Inc.
+# @TODO: add missing URL to news article
+typo3-version.warning = 6.2.x
+
+# TYPO3 version 7.x Sprint Releases
+typo3-version.critical = 7.0.x
+typo3-version.critical = 7.1.x
+typo3-version.critical = 7.2.x
+typo3-version.critical = 7.3.x
+typo3-version.critical = 7.4.x
+typo3-version.critical = 7.5.x
+
+# TYPO3 version 7.6.0: old stable LTS release
+#typo3-version.critical = 7.6.x
+
+# TYPO3 version 8.x Sprint Releases
+typo3-version.critical = 8.0.x
+typo3-version.critical = 8.1.x
+typo3-version.critical = 8.2.x
+typo3-version.critical = 8.3.x
+typo3-version.critical = 8.4.x
+typo3-version.critical = 8.5.x
+typo3-version.critical = 8.6.x
+
+# TYPO3 version 8.7.x: latest stable LTS release
+#typo3-version.critical = 8.7.x
+
+# TYPO3 pre-releases (alpha, beta and development).
+#typo3-version.warning = alpha,beta,dev
+
+# ------------------------------------------------------------------------------
+# TYPO3 core versions (official security bulletins)
+# ------------------------------------------------------------------------------
+
+# At this point in time, this configuration file does not include TYPO3 core
+# versions which are insecure. If you are interested in this features, you
+# possibly want to sponsor the development: https://schams.net
+
+# ------------------------------------------------------------------------------
+# PHP versions
+# ------------------------------------------------------------------------------
+# Syntax: php-version.<STATE> = <comma separated list of versions>
+
+php-version.critical = 4,4.x,4.x.x
+php-version.critical = 5.1,5.1.x
+php-version.warning = 5.2,5.2.x
+php-version.warning = 5.3,5.3.0,5.3.1,5.3.2,5.3.3
+#php-version.warning = 5.4,5.4.x
+#php-version.warning = 5.5,5.6.x
+#php-version.warning = 5.6,5.6.x
+#php-version.warning = 7,7.x,7.x.x
+
+# ------------------------------------------------------------------------------
+# Extensions
+# ------------------------------------------------------------------------------
+# Syntax: extension.<EXTKEY>.<STATE> = <comma separated list of versions>
+# A version value is always MAJOR.MINOR.REVISION, e.g. "1.2.3" (three elements).
+# Shortened version strings are invalid, so do NOT try "1.x" or "2.0", etc.
+
+#extension.myextension.warning = 4.2.x
+#extension.another_ext.critical = 0.1.2,0.1.3
+
+# ------------------------------------------------------------------------------
+# Official TYPO3 Security Bulletins
+# See: http://typo3.org/teams/security/security-bulletins/
+# ------------------------------------------------------------------------------
+# Note: this section is auto-generated
+
+<f:render section="main" />
+
+# ------------------------------------------------------------------------------
+# End of file
