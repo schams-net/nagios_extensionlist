@@ -1,7 +1,25 @@
 <f:layout name="Default" />
 <f:section name="extensionlist">
+# ------------------------------------------------------------------------------
+# [START] TYPO3 insecure extensions
+# ------------------------------------------------------------------------------
+# Syntax: extension.<EXTKEY>.<STATE> = <comma separated list of versions>
+# A version value is always MAJOR.MINOR.REVISION, e.g. "1.2.3" (three elements).
+# Shortened version strings are invalid, so do NOT try "1.x" or "2.0", etc.
+
+#extension.myextension.warning = 4.2.x
+#extension.another_ext.critical = 0.1.2,0.1.3
+
+# ------------------------------------------------------------------------------
+# Official TYPO3 Security Bulletins
+# See: http://typo3.org/teams/security/security-bulletins/
+# ------------------------------------------------------------------------------
+# Note: this section is auto-generated
 <f:for each="{extensionlist}" as="extension">
 # TYPO3 Extension: {extension.title}
 extension.{extension.extensionKey}.critical = {extension.versionList}
 </f:for>
+# ------------------------------------------------------------------------------
+# [END] TYPO3 insecure extensions
+# ------------------------------------------------------------------------------
 </f:section>
