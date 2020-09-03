@@ -15,12 +15,10 @@ namespace SchamsNet\NagiosExtensionlist\Controller;
  * https://www.gnu.org/licenses/gpl.html
  */
 
+use \SchamsNet\NagiosExtensionlist\Domain\Repository\ExtensionlistRepository;
 use \TYPO3\CMS\Core\Utility\GeneralUtility;
 use \TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
-
-use \SchamsNet\NagiosExtensionlist\Domain\Repository\AccesshistoryRepository;
-use \SchamsNet\NagiosExtensionlist\Domain\Repository\ExtensionlistRepository;
 
 /**
  * Extensionlist Controller
@@ -34,14 +32,6 @@ class ExtensionlistController extends ActionController
      * @var \SchamsNet\NagiosExtensionlist\Domain\Repository\ExtensionlistRepository
      */
     protected $extensionlistRepository;
-
-    /**
-     * Accesshistory Repository
-     *
-     * @access protected
-     * @var \SchamsNet\NagiosExtensionlist\Domain\Repository\AccesshistoryRepository
-     */
-    protected $accesshistoryRepository;
 
     /**
      * Constructor
@@ -65,17 +55,6 @@ class ExtensionlistController extends ActionController
     }
 
     /**
-     * Inject Accesshistory Repository.
-     *
-     * @access public
-     * @param \SchamsNet\NagiosExtensionlist\Domain\Repository\AccesshistoryRepository $accesshistoryRepository
-     */
-    public function injectAccesshistoryRepository(AccesshistoryRepository $accesshistoryRepository)
-    {
-        $this->accesshistoryRepository = $accesshistoryRepository;
-    }
-
-    /**
      * Generates list of insecure extensions.
      *
      * @access public
@@ -83,9 +62,6 @@ class ExtensionlistController extends ActionController
      */
     public function listInsecureExtensionsAction()
     {
-        // store client details in access history
-        $this->storeClientDetails();
-
         $insecureExtensions = $this->extensionlistRepository->findByReviewState(-1);
         $insecureExtensionsAndVersionCsv = $this->convertVersionsToCommaSeparatedValues($insecureExtensions);
 
@@ -160,45 +136,5 @@ class ExtensionlistController extends ActionController
         $identificationString = '-';
         $identificationArray = str_split(substr(md5(serialize($insecureExtensionsAndVersionCsv)), 0, 20), 5);
         return strtoupper(implode('-', $identificationArray));
-    }
-
-    /**
-     * Stores details of client accessing the instance as an access history record.
-     *
-     * @access private
-     * @return void
-     */
-    private function storeClientDetails()
-    {
-        $accesshistory = $this->objectManager->get('SchamsNet\\NagiosExtensionlist\\Domain\\Model\\Accesshistory');
-        $accesshistory->setRemoteAddress(GeneralUtility::getIndpEnv('REMOTE_ADDR'));
-        $accesshistory->setXForwardedFor($this->extractFromHttpHeader(array('X-FORWARDED-FOR')));
-        $accesshistory->setCountryCode($this->extractFromHttpHeader(array('CLOUDFRONT-VIEWER-COUNTRY')));
-        $accesshistory->setNagiosPluginVersion('');
-        $accesshistory->setNagiosVersion('');
-        $accesshistory->setUseragent($this->extractFromHttpHeader(array('USER_AGENT')));
-        $accesshistory->setRequest(GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'));
-        $this->accesshistoryRepository->add($accesshistory);
-        $this->objectManager->get('TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager')->persistAll();
-    }
-
-    /**
-     * Returns the given HTTP header, if it exists
-     *
-     * @access private
-     * @param array List of HTTP headers to search for. Must be upper case and without leading 'HTTP_' e.g. 'USER_AGENT'
-     * @return string Value of the HTTP header if found
-     */
-    private function extractFromHttpHeader(array $httpHeader = array())
-    {
-        foreach ($_SERVER as $httpHeaderKey => $httpHeaderValue) {
-            $httpHeaderKey = preg_replace('/^HTTP_/', '', trim(strtoupper($httpHeaderKey)));
-            if (is_string($httpHeaderKey) && !empty($httpHeaderKey)
-            && in_array($httpHeaderKey, $httpHeader)
-            && is_string($httpHeaderValue) && !empty($httpHeaderValue) ) {
-                return $httpHeaderValue;
-            }
-        }
-        return '';
     }
 }

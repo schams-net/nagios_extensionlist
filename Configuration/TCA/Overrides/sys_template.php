@@ -1,5 +1,4 @@
 <?php
-namespace SchamsNet\NagiosExtensionlist\Domain\Repository;
 
 /*
  * This file is part of the TYPO3 Extension "Nagios Extensionlist"
@@ -15,11 +14,10 @@ namespace SchamsNet\NagiosExtensionlist\Domain\Repository;
  * https://www.gnu.org/licenses/gpl.html
  */
 
-use \TYPO3\CMS\Extbase\Persistence\Repository;
-
-/**
- * Repository: Accesshistory
- */
-class AccesshistoryRepository extends Repository
-{
-}
+call_user_func(function () {
+    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile(
+        'nagios_extensionlist',
+        'Configuration/TypoScript',
+        'Nagios Extensionlist'
+    );
+});
