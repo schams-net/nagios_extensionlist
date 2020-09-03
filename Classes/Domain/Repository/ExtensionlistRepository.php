@@ -19,6 +19,7 @@ namespace SchamsNet\NagiosExtensionlist\Domain\Repository;
 use \TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use \TYPO3\CMS\Extbase\Persistence\Repository;
 use \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
+use \TYPO3\CMS\Extbase\Persistence\Generic\QueryResult;
 
 /**
  * Repository: Extensionlist
@@ -30,10 +31,10 @@ class ExtensionlistRepository extends Repository
      *
      * @var array
      */
-    protected $defaultOrderings = array(
+    protected $defaultOrderings = [
         'extension_key' => QueryInterface::ORDER_ASCENDING,
         'integer_version' => QueryInterface::ORDER_ASCENDING
-    );
+    ];
 
     /**
      * Initialize
@@ -43,8 +44,8 @@ class ExtensionlistRepository extends Repository
      */
     public function initializeObject(): void
     {
-        /** @var $querySettings \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings */
-        $querySettings = $this->objectManager->get('TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings');
+        /** @var $querySettings Typo3QuerySettings */
+        $querySettings = $this->objectManager->get(Typo3QuerySettings::class);
         $this->setDefaultQuerySettings($querySettings);
     }
 
@@ -52,12 +53,12 @@ class ExtensionlistRepository extends Repository
      * Returns the last updated extension
      *
      * @access public
-     * @return stdObject
+     * @return QueryResult
      */
-    public function findLastUpdatedExtension()
+    public function findLastUpdatedExtension(): QueryResult
     {
         $query = $this->createQuery();
-        $query->setOrderings(array('last_updated' => QueryInterface::ORDER_DESCENDING));
+        $query->setOrderings(['last_updated' => QueryInterface::ORDER_DESCENDING]);
         $query->setLimit(1);
         return $query->execute();
     }
