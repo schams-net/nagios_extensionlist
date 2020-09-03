@@ -16,7 +16,7 @@
 
 $EM_CONF[$_EXTKEY] = [
     'title' => 'Nagios Extensionlist',
-    'description' => 'Generates a list of all extensions for EXT:nagios, based on the extension list in the current TYPO3 instance.',
+    'description' => 'Generates a list of insecure extensions for EXT:nagios based on the extension list in the current TYPO3 instance.',
     'category' => 'fe',
     'version' => '2.0.0',
     'state' => 'beta',
