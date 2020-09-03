@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace SchamsNet\NagiosExtensionlist\Domain\Model;
 
 /*
@@ -38,12 +39,12 @@ class Extensionlist extends AbstractEntity
     protected $version = '';
 
     /**
-     * @var integer
+     * @var int
      */
     protected $integerVersion = 0;
 
     /**
-     * @var integer
+     * @var int
      */
     protected $reviewState = '';
 
@@ -56,7 +57,7 @@ class Extensionlist extends AbstractEntity
      * @param string $extensionKey
      * @return void
      */
-    public function setExtensionKey($extensionKey)
+    public function setExtensionKey(string $extensionKey): void
     {
         $this->extensionKey = $extensionKey;
     }
@@ -64,7 +65,7 @@ class Extensionlist extends AbstractEntity
     /**
      * @return string
      */
-    public function getExtensionKey()
+    public function getExtensionKey(): string
     {
         return $this->extensionKey;
     }
@@ -73,7 +74,7 @@ class Extensionlist extends AbstractEntity
      * @param string $title
      * @return void
      */
-    public function setTitle($title)
+    public function setTitle(string $title): void
     {
         $this->title = $title;
     }
@@ -90,7 +91,7 @@ class Extensionlist extends AbstractEntity
      * @param string $version
      * @return void
      */
-    public function setVersion($version)
+    public function setVersion(string $version): void
     {
         $this->version = $version;
     }
@@ -98,32 +99,32 @@ class Extensionlist extends AbstractEntity
     /**
      * @return string
      */
-    public function getVersion()
+    public function getVersion(): string
     {
         return $this->version;
     }
 
     /**
-     * @return integer
+     * @return int
      */
-    public function getIntegerVersion()
+    public function getIntegerVersion(): int
     {
         return $this->integerVersion;
     }
 
     /**
-     * @param integer $reviewState
+     * @param int $reviewState
      * @return void
      */
-    public function setReviewState($reviewState)
+    public function setReviewState(int $reviewState): void
     {
         $this->reviewState = $reviewState;
     }
 
     /**
-     * @return integer
+     * @return int
      */
-    public function getReviewState()
+    public function getReviewState(): int
     {
         return $this->reviewState;
     }
@@ -132,7 +133,7 @@ class Extensionlist extends AbstractEntity
      * @param \DateTime $lastUpdated
      * @return void
      */
-    public function setLastUpdated($lastUpdated)
+    public function setLastUpdated(\DateTime $lastUpdated): void
     {
         $this->lastUpdated = $lastUpdated;
     }
@@ -140,7 +141,7 @@ class Extensionlist extends AbstractEntity
     /**
      * @return \DateTime
      */
-    public function getLastUpdated()
+    public function getLastUpdated(): \DateTime
     {
         return $this->lastUpdated;
     }

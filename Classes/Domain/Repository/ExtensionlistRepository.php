@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace SchamsNet\NagiosExtensionlist\Domain\Repository;
 
 /*
@@ -38,9 +39,9 @@ class ExtensionlistRepository extends Repository
      * Initialize
      *
      * @access public
-     * @return viod
+     * @return void
      */
-    public function initializeObject()
+    public function initializeObject(): void
     {
         /** @var $querySettings \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings */
         $querySettings = $this->objectManager->get('TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings');

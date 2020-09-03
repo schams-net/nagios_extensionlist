@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace SchamsNet\NagiosExtensionlist\Controller;
 
 /*
@@ -18,7 +19,7 @@ namespace SchamsNet\NagiosExtensionlist\Controller;
 use \SchamsNet\NagiosExtensionlist\Domain\Repository\ExtensionlistRepository;
 use \TYPO3\CMS\Core\Utility\GeneralUtility;
 use \TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
-use \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
+use \TYPO3\CMS\Extbase\Persistence\Generic\QueryResult;
 
 /**
  * Extensionlist Controller
@@ -60,7 +61,7 @@ class ExtensionlistController extends ActionController
      * @access public
      * @return void
      */
-    public function listInsecureExtensionsAction()
+    public function listInsecureExtensionsAction(): void
     {
         $insecureExtensions = $this->extensionlistRepository->findByReviewState(-1);
         $insecureExtensionsAndVersionCsv = $this->convertVersionsToCommaSeparatedValues($insecureExtensions);
@@ -72,7 +73,7 @@ class ExtensionlistController extends ActionController
         if (is_object($lastUpdated) && $lastUpdated->count() > 0) {
             $lastUpdated = $lastUpdated->getFirst()->getLastUpdated();
             $this->view->assignMultiple(
-                array(
+                [
                     'configurationError' => false,
                     'configurationFileHostName' => GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY'),
                     'configurationFileDate' => date('Ymd'),
@@ -83,7 +84,7 @@ class ExtensionlistController extends ActionController
                     'extensionCountInsecureExtensions' => count($insecureExtensionsAndVersionCsv),
                     'extensionCountInsecureVersions' => $insecureExtensions->count(),
                     'extensionlist' => $insecureExtensionsAndVersionCsv
-                )
+                ]
             );
         } else {
             $this->view->assign('configurationError', true);
@@ -94,13 +95,13 @@ class ExtensionlistController extends ActionController
      * Returns an array of extensions (key) and comma-separated-list of versions (value).
      *
      * @access private
-     * @param TYPO3\CMS\Extbase\Persistence\Generic\QueryResult Insecure extensions
+     * @param QueryResult Insecure extensions
      * @return array
      */
-    private function convertVersionsToCommaSeparatedValues($insecureExtensions)
+    private function convertVersionsToCommaSeparatedValues(QueryResult $insecureExtensions): array
     {
         // init
-        $extensionlist = array();
+        $extensionlist = [];
 
         foreach ($insecureExtensions as $uid => $extension) {
             $key = $extension->getExtensionKey();
@@ -113,11 +114,11 @@ class ExtensionlistController extends ActionController
                 $versionList = $extensionlist[$key]['versionList'] . ',' . $version;
             }
 
-            $extensionlist[$key] = array(
+            $extensionlist[$key] = [
                 'extensionKey' => $key,
                 'title' => $title,
                 'versionList' => $versionList
-            );
+            ];
         }
 
         return $extensionlist;
@@ -125,13 +126,13 @@ class ExtensionlistController extends ActionController
 
     /**
      * Returns a unique identification string based on the current list of insecure extensions.
-     * FOr example: '54391-C872F-E1C8B-4F980'.
+     * For example: '54391-C872F-E1C8B-4F980'.
      *
      * @access private
      * @param array Insecure extensions and version
      * @return string Identification string
      */
-    private function getConfigurationFileId(array $insecureExtensionsAndVersionCsv)
+    private function getConfigurationFileId(array $insecureExtensionsAndVersionCsv): string
     {
         $identificationString = '-';
         $identificationArray = str_split(substr(md5(serialize($insecureExtensionsAndVersionCsv)), 0, 20), 5);
