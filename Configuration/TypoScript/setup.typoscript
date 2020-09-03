@@ -16,6 +16,7 @@ config {
     }
   }
   admPanel = 0
+  debug = 0
 }
 
 page >
