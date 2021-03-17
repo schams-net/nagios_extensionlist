@@ -14,22 +14,24 @@
  * https://www.gnu.org/licenses/gpl.html
  */
 
-use \TYPO3\CMS\Core\Log\LogLevel;
-use \TYPO3\CMS\Core\Log\Writer\FileWriter;
-use \TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
-use \TYPO3\CMS\Core\Utility\GeneralUtility;
-use \TYPO3\CMS\Extbase\Utility\ExtensionUtility;
+if (!defined('TYPO3_MODE')) {
+    die('Access denied.');
+}
 
-$extensionName = GeneralUtility::underscoredToUpperCamelCase($_EXTKEY);
-$pluginName = strtolower($extensionName);
-
-ExtensionUtility::configurePlugin(
-    'SchamsNet.' . $_EXTKEY,
-    $pluginName,
-    array(
-        'Extensionlist' => 'listInsecureExtensions'
-    ),
-    array(
-        'Extensionlist' => 'listInsecureExtensions',
-    )
+call_user_func(
+    function () {
+        // Register frontend plugin
+        \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
+            'NagiosExtensionlist',
+            'Extensionlist',
+            [
+                \SchamsNet\NagiosExtensionlist\Controller\ExtensionlistController::class => 'listInsecureExtensions',
+            ],
+            // non-cacheable actions
+            [
+                \SchamsNet\NagiosExtensionlist\Controller\ExtensionlistController::class => 'listInsecureExtensions',
+            ],
+            \TYPO3\CMS\Extbase\Utility\ExtensionUtility::PLUGIN_TYPE_PLUGIN
+        );
+    }
 );

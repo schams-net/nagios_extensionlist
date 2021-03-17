@@ -1,16 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="2017-04-22T00:00:00Z" product-name="nagios_extensionlist">
+	<file source-language="en" datatype="plaintext" original="messages" date="2020-09-03T00:00:00Z" product-name="nagios_extensionlist">
 		<header/>
 		<body>
-
-			<trans-unit id="api_key" xml:space="preserve">
-				<source>geocore API key (access token)</source>
+			<trans-unit id="extension_name" xml:space="preserve">
+				<source>Nagios Extensionlist</source>
 			</trans-unit>
-			<trans-unit id="api_hostname" xml:space="preserve">
-				<source>geocore hostname</source>
-			</trans-unit>
-
 		</body>
 	</file>
 </xliff>

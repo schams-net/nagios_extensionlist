@@ -14,11 +14,11 @@
  * https://www.gnu.org/licenses/gpl.html
  */
 
-$EM_CONF[$_EXTKEY] = array(
+$EM_CONF[$_EXTKEY] = [
     'title' => 'Nagios Extensionlist',
-    'description' => 'Generates a list of all extensions for EXT:nagios, based on the extension list in the current TYPO3 instance.',
+    'description' => 'Generates a list of insecure extensions for EXT:nagios based on the extension list in the current TYPO3 instance.',
     'category' => 'fe',
-    'version' => '1.0.0',
+    'version' => '2.0.0',
     'state' => 'beta',
     'uploadfolder' => false,
     'createDirs' => '',
@@ -26,14 +26,14 @@ $EM_CONF[$_EXTKEY] = array(
     'author' => 'Michael Schams (schams.net)',
     'author_email' => 'schams.net',
     'author_company' => 'https://schams.net',
-    'constraints' => array (
-        'depends' => array (
-            'php' => '5.5.0-7.0.99',
-            'typo3' => '7.0.0-8.99.99',
-        ),
-        'conflicts' => array (
-        ),
-        'suggests' => array (
-        ),
-    ),
-);
+    'constraints' => [
+        'depends' => [
+            'php' => '7.2.0-7.3.99',
+            'typo3' => '10.4.0-10.4.99',
+        ],
+        'conflicts' => [
+        ],
+        'suggests' => [
+        ],
+    ],
+];

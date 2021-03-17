@@ -1,0 +1,13 @@
+{
+    "name": "schams-net/nagios-extensionlist",
+    "type": "typo3-cms-extension",
+    "description": "Generates a list of insecure extensions for EXT:nagios based on the extension list in the current TYPO3 instance.",
+    "require": {
+        "typo3/cms-core": "^10"
+    },
+    "autoload": {
+        "psr-4": {
+            "SchamsNet\\NagiosExtensionlist\\": "Classes/"
+        }
+    }
+}

@@ -5,19 +5,6 @@ plugin.tx_nagiosextensionlist {
     partialRootPaths.0 = {$plugin.tx_nagiosextensionlist.view.partialRootPath}
     layoutRootPaths.0 = {$plugin.tx_nagiosextensionlist.view.layoutRootPath}
   }
-
-  settings {
-  }
-
-  persistence {
-    classes {
-      SchamsNet\NagiosExtensionlist\Domain\Model\Extensionlist {
-        mapping {
-          tableName = tx_extensionmanager_domain_model_extension
-        }
-      }
-    }
-  }
 }
 
 config {
@@ -28,11 +15,8 @@ config {
       replace = 0
     }
   }
-
   admPanel = 0
-
-  # EXT:sourceopt destroys text/plain documents
-  sourceopt.enabled = 0
+  debug = 0
 }
 
 page >
@@ -46,18 +30,7 @@ page {
     vendorName = SchamsNet
     controller = Extensionlist
     extensionName = NagiosExtensionlist
-    pluginName = nagiosextensionlist
+    pluginName = Extensionlist
     action = listInsecureExtensions
-
-#   switchableControllerActions {
-#     NagiosExtensionlist {
-#       1 = listInsecureExtensions
-#     }
-#   }
-
-    view =< plugin.tx_nagiosextensionlist.view
-    settings =< plugin.tx_nagiosextensionlist.settings
-    persistence =< plugin.tx_nagiosextensionlist.persistence
-#   update =< plugin.tx_nagiosextensionlist.update
   }
 }
