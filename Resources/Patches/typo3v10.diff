@@ -1,0 +1,19 @@
+--- a/typo3/sysext/extensionmanager/Classes/Utility/Importer/ExtensionListUtility.php	2021-03-17 14:46:04.698466782 +0000
++++ b/typo3/sysext/extensionmanager/Classes/Utility/Importer/ExtensionListUtility.php	2021-03-17 14:47:05.822063027 +0000
+@@ -172,15 +172,7 @@
+             $this->maxRowsPerChunk,
+             floor($maxBindParameters / $countOfBindParamsPerRow)
+         );
+-        // Only import extensions that are compatible with 7.6 or higher.
+-        // TER only allows to publish extensions with compatibility if the TYPO3 version has been released
+-        // And 7.6 was released on 10th of November 2015.
+-        // This effectively reduces the number of extensions imported into this TYPO3 installation
+-        // by more than 70%. As long as the extensions.xml from TER includes these files, we need to "hack" this
+-        // within TYPO3 Core.
+-        // For TYPO3 v11.0, this date could be set to 2018-10-02 (v9 LTS release).
+-        // Also see https://decisions.typo3.org/t/reduce-size-of-extension-manager-db-table/329/
+-        $this->minimumDateToImport = strtotime('2017-04-04T00:00:00+00:00');
++        $this->minimumDateToImport = strtotime('1970-01-01T00:00:00+00:00');
+     }
+ 
+     /**
