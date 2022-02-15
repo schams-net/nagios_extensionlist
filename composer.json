@@ -9,5 +9,10 @@
         "psr-4": {
             "SchamsNet\\NagiosExtensionlist\\": "Classes/"
         }
+    },
+    "extra": {
+        "typo3/cms": {
+            "extension-key": "nagios_extensionlist"
+        }
     }
 }
