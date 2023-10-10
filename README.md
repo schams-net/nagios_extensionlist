@@ -15,8 +15,8 @@ for insecure TYPO3 instances. See https://schams.net/nagios for further details.
 
 ## System Requirements
 
-* TYPO3 version 10 LTS
-* PHP version 7.2, 7.3, or 7.4
+* TYPO3 version 11 LTS
+* PHP version 7.4 or 8.x
 
 ## Installation
 
@@ -24,7 +24,7 @@ for insecure TYPO3 instances. See https://schams.net/nagios for further details.
 
 ## License
 
-(c) 2018-2022 Michael Schams (schams.net), all rights reserved
+(c) 2018-2023 Michael Schams (schams.net), all rights reserved
 
 This software free software; you can redistribute it and/or modify it under the terms of the GNU General
 Public License, either version 2 of the License, or any later version. For the full copyright and license
