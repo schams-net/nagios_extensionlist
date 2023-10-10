@@ -16,6 +16,7 @@ namespace SchamsNet\NagiosExtensionlist\Controller;
  * https://www.gnu.org/licenses/gpl.html
  */
 
+use \Psr\Http\Message\ResponseInterface;
 use \SchamsNet\NagiosExtensionlist\Domain\Repository\ExtensionlistRepository;
 use \TYPO3\CMS\Core\Utility\GeneralUtility;
 use \TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
@@ -42,7 +43,7 @@ class ExtensionlistController extends ActionController
     /**
      * Generates list of insecure extensions.
      */
-    public function listInsecureExtensionsAction(): void
+    public function listInsecureExtensionsAction(): ResponseInterface
     {
         $insecureExtensions = $this->extensionlistRepository->findByReviewState(-1);
         $insecureExtensionsAndVersionCsv = $this->convertVersionsToCommaSeparatedValues($insecureExtensions);
@@ -70,6 +71,7 @@ class ExtensionlistController extends ActionController
         } else {
             $this->view->assign('configurationError', true);
         }
+        return $this->htmlResponse();
     }
 
     /**
