@@ -36,21 +36,8 @@ class ExtensionlistController extends ActionController
 
     /**
      * Constructor
-     *
-     * @access public
-     * @return void
      */
-    public function __construct()
-    {
-    }
-
-    /**
-     * Inject Extensionlist Repository.
-     *
-     * @access public
-     * @param \SchamsNet\NagiosExtensionlist\Domain\Repository\ExtensionlistRepository $extensionlistRepository
-     */
-    public function injectExtensionlistRepository(ExtensionlistRepository $extensionlistRepository)
+    public function __construct(ExtensionlistRepository $extensionlistRepository)
     {
         $this->extensionlistRepository = $extensionlistRepository;
     }
