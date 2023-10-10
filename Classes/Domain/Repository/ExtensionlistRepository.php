@@ -28,8 +28,6 @@ class ExtensionlistRepository extends Repository
 {
     /**
      * Set default ordering for the entire repository
-     *
-     * @var array
      */
     protected $defaultOrderings = [
         'extension_key' => QueryInterface::ORDER_ASCENDING,
@@ -38,9 +36,6 @@ class ExtensionlistRepository extends Repository
 
     /**
      * Initialize
-     *
-     * @access public
-     * @return void
      */
     public function initializeObject(): void
     {
@@ -51,9 +46,6 @@ class ExtensionlistRepository extends Repository
 
     /**
      * Returns the last updated extension
-     *
-     * @access public
-     * @return QueryResult
      */
     public function findLastUpdatedExtension(): QueryResult
     {

@@ -28,9 +28,6 @@ class ExtensionlistController extends ActionController
 {
     /**
      * Extensionlist Repository
-     *
-     * @access protected
-     * @var \SchamsNet\NagiosExtensionlist\Domain\Repository\ExtensionlistRepository
      */
     protected $extensionlistRepository;
 
@@ -44,9 +41,6 @@ class ExtensionlistController extends ActionController
 
     /**
      * Generates list of insecure extensions.
-     *
-     * @access public
-     * @return void
      */
     public function listInsecureExtensionsAction(): void
     {
@@ -80,10 +74,6 @@ class ExtensionlistController extends ActionController
 
     /**
      * Returns an array of extensions (key) and comma-separated-list of versions (value).
-     *
-     * @access private
-     * @param QueryResult Insecure extensions
-     * @return array
      */
     private function convertVersionsToCommaSeparatedValues(QueryResult $insecureExtensions): array
     {
@@ -114,10 +104,6 @@ class ExtensionlistController extends ActionController
     /**
      * Returns a unique identification string based on the current list of insecure extensions.
      * For example: '54391-C872F-E1C8B-4F980'.
-     *
-     * @access private
-     * @param array Insecure extensions and version
-     * @return string Identification string
      */
     private function getConfigurationFileId(array $insecureExtensionsAndVersionCsv): string
     {
