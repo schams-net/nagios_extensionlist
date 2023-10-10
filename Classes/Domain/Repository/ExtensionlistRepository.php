@@ -16,16 +16,18 @@ namespace SchamsNet\NagiosExtensionlist\Domain\Repository;
  * https://www.gnu.org/licenses/gpl.html
  */
 
+use SchamsNet\NagiosExtensionlist\Domain\Repository\Traits\ExtensionlistTrait;
 use \TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use \TYPO3\CMS\Extbase\Persistence\Repository;
-use \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
-use \TYPO3\CMS\Extbase\Persistence\Generic\QueryResult;
+use \TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 
 /**
  * Repository: Extensionlist
  */
 class ExtensionlistRepository extends Repository
 {
+    use ExtensionlistTrait;
+
     /**
      * Set default ordering for the entire repository
      */
@@ -35,19 +37,9 @@ class ExtensionlistRepository extends Repository
     ];
 
     /**
-     * Initialize
-     */
-    public function initializeObject(): void
-    {
-        /** @var $querySettings Typo3QuerySettings */
-        $querySettings = $this->objectManager->get(Typo3QuerySettings::class);
-        $this->setDefaultQuerySettings($querySettings);
-    }
-
-    /**
      * Returns the last updated extension
      */
-    public function findLastUpdatedExtension(): QueryResult
+    public function findLastUpdatedExtension(): QueryResultInterface
     {
         $query = $this->createQuery();
         $query->setOrderings(['last_updated' => QueryInterface::ORDER_DESCENDING]);
