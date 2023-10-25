@@ -16,6 +16,7 @@ namespace SchamsNet\NagiosExtensionlist\Controller;
  * https://www.gnu.org/licenses/gpl.html
  */
 
+use \Psr\Http\Message\ResponseInterface;
 use \SchamsNet\NagiosExtensionlist\Domain\Repository\ExtensionlistRepository;
 use \TYPO3\CMS\Core\Utility\GeneralUtility;
 use \TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
@@ -28,40 +29,21 @@ class ExtensionlistController extends ActionController
 {
     /**
      * Extensionlist Repository
-     *
-     * @access protected
-     * @var \SchamsNet\NagiosExtensionlist\Domain\Repository\ExtensionlistRepository
      */
     protected $extensionlistRepository;
 
     /**
      * Constructor
-     *
-     * @access public
-     * @return void
      */
-    public function __construct()
-    {
-    }
-
-    /**
-     * Inject Extensionlist Repository.
-     *
-     * @access public
-     * @param \SchamsNet\NagiosExtensionlist\Domain\Repository\ExtensionlistRepository $extensionlistRepository
-     */
-    public function injectExtensionlistRepository(ExtensionlistRepository $extensionlistRepository)
+    public function __construct(ExtensionlistRepository $extensionlistRepository)
     {
         $this->extensionlistRepository = $extensionlistRepository;
     }
 
     /**
      * Generates list of insecure extensions.
-     *
-     * @access public
-     * @return void
      */
-    public function listInsecureExtensionsAction(): void
+    public function listInsecureExtensionsAction(): ResponseInterface
     {
         $insecureExtensions = $this->extensionlistRepository->findByReviewState(-1);
         $insecureExtensionsAndVersionCsv = $this->convertVersionsToCommaSeparatedValues($insecureExtensions);
@@ -89,14 +71,11 @@ class ExtensionlistController extends ActionController
         } else {
             $this->view->assign('configurationError', true);
         }
+        return $this->htmlResponse();
     }
 
     /**
      * Returns an array of extensions (key) and comma-separated-list of versions (value).
-     *
-     * @access private
-     * @param QueryResult Insecure extensions
-     * @return array
      */
     private function convertVersionsToCommaSeparatedValues(QueryResult $insecureExtensions): array
     {
@@ -127,10 +106,6 @@ class ExtensionlistController extends ActionController
     /**
      * Returns a unique identification string based on the current list of insecure extensions.
      * For example: '54391-C872F-E1C8B-4F980'.
-     *
-     * @access private
-     * @param array Insecure extensions and version
-     * @return string Identification string
      */
     private function getConfigurationFileId(array $insecureExtensionsAndVersionCsv): string
     {

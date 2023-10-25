@@ -23,39 +23,15 @@ use \TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
  */
 class Extensionlist extends AbstractEntity
 {
-    /**
-     * @var string
-     */
     protected $extensionKey = '';
-
-    /**
-     * @var string
-     */
     protected $title = '';
-
-    /**
-     * @var string
-     */
     protected $version = '';
-
-    /**
-     * @var int
-     */
     protected $integerVersion = 0;
-
-    /**
-     * @var int
-     */
     protected $reviewState = '';
-
-    /**
-     * @var \DateTime
-     */
     protected $lastUpdated = 0;
 
     /**
-     * @param string $extensionKey
-     * @return void
+     * Set extension key
      */
     public function setExtensionKey(string $extensionKey): void
     {
@@ -63,7 +39,7 @@ class Extensionlist extends AbstractEntity
     }
 
     /**
-     * @return string
+     * Get extension key
      */
     public function getExtensionKey(): string
     {
@@ -71,8 +47,7 @@ class Extensionlist extends AbstractEntity
     }
 
     /**
-     * @param string $title
-     * @return void
+     * Set title
      */
     public function setTitle(string $title): void
     {
@@ -80,7 +55,7 @@ class Extensionlist extends AbstractEntity
     }
 
     /**
-     * @return string
+     * Get title
      */
     public function getTitle()
     {
@@ -88,8 +63,7 @@ class Extensionlist extends AbstractEntity
     }
 
     /**
-     * @param string $version
-     * @return void
+     * Set version
      */
     public function setVersion(string $version): void
     {
@@ -97,7 +71,7 @@ class Extensionlist extends AbstractEntity
     }
 
     /**
-     * @return string
+     * Get version
      */
     public function getVersion(): string
     {
@@ -105,7 +79,7 @@ class Extensionlist extends AbstractEntity
     }
 
     /**
-     * @return int
+     * Get version as integer
      */
     public function getIntegerVersion(): int
     {
@@ -113,8 +87,7 @@ class Extensionlist extends AbstractEntity
     }
 
     /**
-     * @param int $reviewState
-     * @return void
+     * Set review state
      */
     public function setReviewState(int $reviewState): void
     {
@@ -122,7 +95,7 @@ class Extensionlist extends AbstractEntity
     }
 
     /**
-     * @return int
+     * Get review state
      */
     public function getReviewState(): int
     {
@@ -130,8 +103,7 @@ class Extensionlist extends AbstractEntity
     }
 
     /**
-     * @param \DateTime $lastUpdated
-     * @return void
+     * Set date/time (time stamp) of last update
      */
     public function setLastUpdated(\DateTime $lastUpdated): void
     {
@@ -139,7 +111,7 @@ class Extensionlist extends AbstractEntity
     }
 
     /**
-     * @return \DateTime
+     * Get date/time (time stamp) of last update
      */
     public function getLastUpdated(): \DateTime
     {
