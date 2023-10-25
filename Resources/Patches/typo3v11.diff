@@ -1,0 +1,11 @@
+--- a/typo3/sysext/extensionmanager/Classes/Domain/Repository/BulkExtensionRepositoryWriter.php	2023-10-26 09:39:41.811967364 +1100
++++ b/typo3/sysext/extensionmanager/Classes/Domain/Repository/BulkExtensionRepositoryWriter.php	2023-10-26 09:40:13.799967172 +1100
+@@ -160,7 +160,7 @@
+         // within TYPO3 Core.
+         // For TYPO3 v11.0, this date could be set to 2018-10-02 (v9 LTS release).
+         // Also see https://decisions.typo3.org/t/reduce-size-of-extension-manager-db-table/329/
+-        $this->minimumDateToImport = strtotime('2017-04-04T00:00:00+00:00');
++        $this->minimumDateToImport = strtotime('1970-01-01T00:00:00+00:00');
+     }
+ 
+     /**
