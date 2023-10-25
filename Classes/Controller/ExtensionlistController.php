@@ -1,5 +1,7 @@
 <?php
+
 declare(strict_types=1);
+
 namespace SchamsNet\NagiosExtensionlist\Controller;
 
 /*
@@ -16,12 +18,13 @@ namespace SchamsNet\NagiosExtensionlist\Controller;
  * https://www.gnu.org/licenses/gpl.html
  */
 
-use \Psr\Http\Message\ResponseInterface;
-use \SchamsNet\NagiosExtensionlist\Domain\Repository\ExtensionlistRepository;
-use \SchamsNet\NagiosExtensionlist\Service\Typo3CoreVersionService;
-use \TYPO3\CMS\Core\Utility\GeneralUtility;
-use \TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
-use \TYPO3\CMS\Extbase\Persistence\Generic\QueryResult;
+use Psr\Http\Message\ResponseInterface;
+use SchamsNet\NagiosExtensionlist\CoreVersion\MajorRelease;
+use SchamsNet\NagiosExtensionlist\Domain\Repository\ExtensionlistRepository;
+use SchamsNet\NagiosExtensionlist\Service\TYPO3CoreVersionService;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Extbase\Persistence\Generic\QueryResult;
 
 /**
  * Extensionlist Controller
@@ -69,7 +72,7 @@ class ExtensionlistController extends ActionController
                     'extensionCountInsecureExtensions' => count($insecureExtensionsAndVersionCsv),
                     'extensionCountInsecureVersions' => $insecureExtensions->count(),
                     'extensionlist' => $insecureExtensionsAndVersionCsv,
-                    'insecureCoreVersions' => $insecureTypo3CoreVersions
+                    'insecureCoreVersions' => $insecureTypo3CoreVersions,
                 ]
             );
         } else {
@@ -83,12 +86,18 @@ class ExtensionlistController extends ActionController
      */
     public function getInsecureTypo3CoreVersions(): array
     {
-        $versionService = GeneralUtility::makeInstance(Typo3CoreVersionService::class);
-        $insecureVersions = [];
-        foreach ($versionService->getAvailableMajorVersions() as $version) {
-            $insecureVersions[$version] = implode(',', $versionService->getInsecureReleasesForMajor($version));
+        $coreVersionService = GeneralUtility::makeInstance(
+            TYPO3CoreVersionService::class
+        );
+        $insecureMajorReleases = [];
+        /** @var MajorRelease $version */
+        foreach ($coreVersionService->getAllMajorReleases() as $version) {
+            if ($version->containsInsecureReleases()) {
+                $insecureMajorReleases[$version->getVersion()] = $version;
+            }
         }
-        return $insecureVersions;
+
+        return $insecureMajorReleases;
     }
 
     /**
@@ -121,7 +130,7 @@ class ExtensionlistController extends ActionController
             $extensionlist[$key] = [
                 'extensionKey' => $key,
                 'title' => $title,
-                'versionList' => $versionList
+                'versionList' => $versionList,
             ];
         }
 
