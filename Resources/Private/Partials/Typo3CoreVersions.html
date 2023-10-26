@@ -93,6 +93,10 @@ typo3-version.critical = 11.4.x
 # TYPO3 pre-releases (alpha, beta and development).
 #typo3-version.warning = alpha,beta,dev
 
+# TYPO3 Core versions with known security issues
+<f:for each="{insecureCoreVersions}" as="insecureVersions">
+typo3-version.critical = {insecureVersions}
+</f:for>
 # ------------------------------------------------------------------------------
 # [END] TYPO3 core versions
 # ------------------------------------------------------------------------------
