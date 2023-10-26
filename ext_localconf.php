@@ -14,10 +14,10 @@
  * https://www.gnu.org/licenses/gpl.html
  */
 
-use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
-use TYPO3\CMS\Core\Cache\Backend\FileBackend;
-use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
 use SchamsNet\NagiosExtensionlist\Controller\ExtensionlistController;
+use TYPO3\CMS\Core\Cache\Backend\FileBackend;
+use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
+use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
 
 defined('TYPO3') or die();
 

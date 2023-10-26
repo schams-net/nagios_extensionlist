@@ -1,6 +1,10 @@
 <?php
+
 declare(strict_types=1);
+
 namespace SchamsNet\NagiosExtensionlist;
+
+use SchamsNet\NagiosExtensionlist\Domain\Model\Extensionlist;
 
 /*
  * This file is part of the TYPO3 Extension "Nagios Extensionlist"
@@ -15,9 +19,8 @@ namespace SchamsNet\NagiosExtensionlist;
  * For the full copyright and license information, please see
  * https://www.gnu.org/licenses/gpl.html
  */
-
 return [
-    \SchamsNet\NagiosExtensionlist\Domain\Model\Extensionlist::class => [
-        'tableName' => 'tx_extensionmanager_domain_model_extension'
-    ]
+    Extensionlist::class => [
+        'tableName' => 'tx_extensionmanager_domain_model_extension',
+    ],
 ];

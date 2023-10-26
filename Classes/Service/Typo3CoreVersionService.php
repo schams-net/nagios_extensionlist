@@ -1,5 +1,7 @@
 <?php
+
 declare(strict_types=1);
+
 namespace SchamsNet\NagiosExtensionlist\Service;
 
 /*
@@ -19,8 +21,8 @@ namespace SchamsNet\NagiosExtensionlist\Service;
 use SchamsNet\NagiosExtensionlist\CoreVersion\CoreRelease;
 use SchamsNet\NagiosExtensionlist\CoreVersion\MajorRelease;
 use SchamsNet\NagiosExtensionlist\Service\Exception\RemoteFetchException;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class Typo3CoreVersionService
 {
