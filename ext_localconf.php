@@ -25,11 +25,11 @@ call_user_func(
             'NagiosExtensionlist',
             'Extensionlist',
             [
-                \SchamsNet\NagiosExtensionlist\Controller\ExtensionlistController::class => 'listInsecureExtensions',
+                \SchamsNet\NagiosExtensionlist\Controller\ExtensionlistController::class => 'generateResponse',
             ],
             // non-cacheable actions
             [
-                \SchamsNet\NagiosExtensionlist\Controller\ExtensionlistController::class => 'listInsecureExtensions',
+                \SchamsNet\NagiosExtensionlist\Controller\ExtensionlistController::class => 'generateResponse',
             ],
             \TYPO3\CMS\Extbase\Utility\ExtensionUtility::PLUGIN_TYPE_PLUGIN
         );

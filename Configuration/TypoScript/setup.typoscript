@@ -31,6 +31,6 @@ page {
     controller = Extensionlist
     extensionName = NagiosExtensionlist
     pluginName = Extensionlist
-    action = listInsecureExtensions
+    action = generateResponse
   }
 }

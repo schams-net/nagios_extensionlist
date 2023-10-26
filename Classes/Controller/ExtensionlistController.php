@@ -18,6 +18,7 @@ namespace SchamsNet\NagiosExtensionlist\Controller;
 
 use \Psr\Http\Message\ResponseInterface;
 use \SchamsNet\NagiosExtensionlist\Domain\Repository\ExtensionlistRepository;
+use \SchamsNet\NagiosExtensionlist\Service\Typo3CoreVersionService;
 use \TYPO3\CMS\Core\Utility\GeneralUtility;
 use \TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use \TYPO3\CMS\Extbase\Persistence\Generic\QueryResult;
@@ -41,11 +42,13 @@ class ExtensionlistController extends ActionController
     }
 
     /**
-     * Generates list of insecure extensions.
+     * Generates list of insecure TYPO3 Core versions and TYPO3 extensions.
      */
-    public function listInsecureExtensionsAction(): ResponseInterface
+    public function generateResponseAction(): ResponseInterface
     {
-        $insecureExtensions = $this->extensionlistRepository->findByReviewState(-1);
+        $insecureTypo3CoreVersions = $this->getInsecureTypo3CoreVersions();
+
+        $insecureExtensions = $this->getInsecureExtensions();
         $insecureExtensionsAndVersionCsv = $this->convertVersionsToCommaSeparatedValues($insecureExtensions);
 
         // Determine status of extension list by retrieving most recent record
@@ -65,13 +68,35 @@ class ExtensionlistController extends ActionController
                     'extensionCountLastUpdated' => $lastUpdated,
                     'extensionCountInsecureExtensions' => count($insecureExtensionsAndVersionCsv),
                     'extensionCountInsecureVersions' => $insecureExtensions->count(),
-                    'extensionlist' => $insecureExtensionsAndVersionCsv
+                    'extensionlist' => $insecureExtensionsAndVersionCsv,
+                    'insecureCoreVersions' => $insecureTypo3CoreVersions
                 ]
             );
         } else {
             $this->view->assign('configurationError', true);
         }
         return $this->htmlResponse();
+    }
+
+    /**
+     * Returns an array of (major) TYPO3 Core versions and their insecure releases (comma-separated).
+     */
+    public function getInsecureTypo3CoreVersions(): array
+    {
+        $versionService = GeneralUtility::makeInstance(Typo3CoreVersionService::class);
+        $insecureVersions = [];
+        foreach ($versionService->getAvailableMajorVersions() as $version) {
+            $insecureVersions[$version] = implode(',', $versionService->getInsecureReleasesForMajor($version));
+        }
+        return $insecureVersions;
+    }
+
+    /**
+     * Returns a list of insecure extensions.
+     */
+    public function getInsecureExtensions(): QueryResult
+    {
+        return $this->extensionlistRepository->findByReviewState(-1);
     }
 
     /**
