@@ -1,18 +1,61 @@
 {
-    "name": "schams-net/nagios-extensionlist",
-    "type": "typo3-cms-extension",
-    "description": "Generates a list of insecure extensions for EXT:nagios based on the extension list in the current TYPO3 instance.",
-    "require": {
-        "typo3/cms-core": "^11"
-    },
-    "autoload": {
-        "psr-4": {
-            "SchamsNet\\NagiosExtensionlist\\": "Classes/"
-        }
-    },
-    "extra": {
-        "typo3/cms": {
-            "extension-key": "nagios_extensionlist"
-        }
-    }
+	"name": "schams-net/nagios-extensionlist",
+	"description": "Generates a list of insecure extensions for EXT:nagios based on the extension list in the current TYPO3 instance.",
+	"type": "typo3-cms-extension",
+	"require": {
+		"typo3/cms-core": "^11"
+	},
+	"require-dev": {
+		"ergebnis/composer-normalize": "*",
+		"friendsofphp/php-cs-fixer": "*",
+		"saschaegerer/phpstan-typo3": "*",
+		"squizlabs/php_codesniffer": "*",
+		"ssch/typo3-rector": "*",
+		"typo3/coding-standards": "*"
+	},
+	"autoload": {
+		"psr-4": {
+			"SchamsNet\\NagiosExtensionlist\\": "Classes/"
+		}
+	},
+	"config": {
+		"allow-plugins": {
+			"ergebnis/composer-normalize": true,
+			"phpstan/extension-installer": true,
+			"typo3/class-alias-loader": true,
+			"typo3/cms-composer-installers": true
+		},
+		"bin-dir": ".Build/bin",
+		"preferred-install": {
+			"*": "dist"
+		},
+		"sort-packages": true,
+		"vendor-dir": ".Build/vendor"
+	},
+	"extra": {
+		"typo3/cms": {
+			"extension-key": "nagios_extensionlist"
+		}
+	},
+	"scripts": {
+		"ci:composer": [
+			"@ci:composer:validate",
+			"@ci:composer:normalize"
+		],
+		"ci:composer:normalize": "@composer normalize --dry-run",
+		"ci:composer:validate": "@composer validate",
+		"ci:php": [
+			"@ci:php:cs-fixer",
+			"@ci:php:lint",
+			"@ci:php:sniff"
+		],
+		"ci:php:cs-fixer": "php-cs-fixer fix -v --dry-run --using-cache no --diff",
+		"ci:php:cs-fixer-fix": "php-cs-fixer fix -v --using-cache no --diff",
+		"ci:php:lint": "find .*.php *.php Classes -name '*.php' -print0 | xargs -r -0 -n 1 -P 4 php -l",
+		"ci:php:sniff": "if [ -d Classes ] ; then phpcs Classes ; fi",
+		"ci:php:stan": "if [ -d Classes ] ; then phpstan --no-progress ; fi",
+		"ci:rector": "rector process --config ./rector.php --dry-run",
+		"ci:rector-fix": "rector process --config ./rector.php",
+		"ci:t3-cs": "t3-cs setup extension"
+	}
 }
