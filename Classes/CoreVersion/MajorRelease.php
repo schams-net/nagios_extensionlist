@@ -125,17 +125,13 @@ class MajorRelease
             }
             $insecureVersions[] = $versionString;
         } else {
-            /** @var CoreRelease $coreRelease */
             foreach ($this->coreReleases as $coreRelease) {
                 $versionString = $coreRelease->getVersion();
                 if (version_compare($versionString, $this->getLts()) === -1) {
                     if (mb_substr_count($versionString, '.') == 2) {
                         $insecureVersions[] = mb_substr($versionString, 0, mb_strrpos($versionString, '.')) . '.x';
                     }
-                } elseif (version_compare(
-                    $versionString,
-                    $this->latestSecurityPatchRelease->getVersion()
-                ) === -1) {
+                } elseif (version_compare($versionString, $this->latestSecurityPatchRelease->getVersion()) === -1) {
                     $insecureVersions[] = $versionString;
                 }
             }
