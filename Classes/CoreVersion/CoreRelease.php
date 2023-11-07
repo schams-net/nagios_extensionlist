@@ -37,18 +37,9 @@ class CoreRelease
         $this->isElts = $isElts;
     }
 
-    public static function fromApiResponse(array $response): ?self
+    public static function fromApiResponse(array $response): self
     {
-        //        if (empty($response)) {
-        //            return null;
-        //        }
-        return new self(
-            $response['version'],
-            new \DateTimeImmutable($response['date'] ?? ''),
-            $response['type'],
-            $response['tar_package']['sha1sum'] ?? '',
-            $response['elts'] ?? false
-        );
+        return new self($response['version'], new \DateTimeImmutable($response['date']), $response['type'], $response['tar_package']['sha1sum'], $response['elts'] ?? false);
     }
 
     public function getVersion(): string

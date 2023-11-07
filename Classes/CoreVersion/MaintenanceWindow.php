@@ -30,9 +30,7 @@ class MaintenanceWindow
 
     public static function fromApiResponse(array $response): self
     {
-        $maintainedUntil = isset($response['maintained_until']) ? new \DateTimeImmutable(
-            $response['maintained_until']
-        ) : null;
+        $maintainedUntil = isset($response['maintained_until']) ? new \DateTimeImmutable($response['maintained_until']) : null;
         $eltsUntil = isset($response['elts_until']) ? new \DateTimeImmutable($response['elts_until']) : null;
 
         return new self($maintainedUntil, $eltsUntil);
