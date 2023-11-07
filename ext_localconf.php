@@ -14,24 +14,18 @@
  * https://www.gnu.org/licenses/gpl.html
  */
 
-if (!defined('TYPO3_MODE')) {
-    die('Access denied.');
-}
+use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
+use SchamsNet\NagiosExtensionlist\Controller\ExtensionlistController;
 
-call_user_func(
-    function () {
-        // Register frontend plugin
-        \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-            'NagiosExtensionlist',
-            'Extensionlist',
-            [
-                \SchamsNet\NagiosExtensionlist\Controller\ExtensionlistController::class => 'generateResponse',
-            ],
-            // non-cacheable actions
-            [
-                \SchamsNet\NagiosExtensionlist\Controller\ExtensionlistController::class => 'generateResponse',
-            ],
-            \TYPO3\CMS\Extbase\Utility\ExtensionUtility::PLUGIN_TYPE_PLUGIN
-        );
-    }
-);
+defined('TYPO3') or die();
+
+(function () {
+
+    // register frontend plugin
+    ExtensionUtility::configurePlugin(
+        'NagiosExtensionlist',
+        'Extensionlist',
+        [ExtensionlistController::class => 'generateResponse'],
+        [ExtensionlistController::class => 'generateResponse']
+    );
+})();
