@@ -1,68 +1,46 @@
 <?php
-
+declare(strict_types=1);
 namespace SchamsNet\NagiosExtensionlist\Service;
+
+/*
+ * This file is part of the TYPO3 Extension "Nagios Extensionlist"
+ *
+ * Based on the work contributed by atlantis dx GmbH <info@atlantisdx.de>.
+ * @see \TYPO3\CMS\Install\Service\TYPO3CoreVersionService
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please see
+ * https://www.gnu.org/licenses/gpl.html
+ */
 
 use SchamsNet\NagiosExtensionlist\CoreVersion\CoreRelease;
 use SchamsNet\NagiosExtensionlist\CoreVersion\MajorRelease;
 use SchamsNet\NagiosExtensionlist\Service\Exception\RemoteFetchException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-/**
- *  Copyright notice
- *
- *  (c) 2023 atlantis dx GmbH <info@atlantisdx.de>, atlantis dx GmbH
- *
- *  All rights reserved
- *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
- *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  This copyright notice MUST APPEAR in all copies of the script!
- *
- * @see \TYPO3\CMS\Install\Service\TYPO3CoreVersionService
- ***************************************************************/
-class TYPO3CoreVersionService
+class Typo3CoreVersionService
 {
     /**
-     * Base URI for TYPO3 Version REST api
-     *
-     * @var string
+     * Base URI of the TYPO3 version REST API
      */
     protected $apiBaseUrl = 'https://get.typo3.org/api/v1/';
 
     /**
-     * support type categorized storage for major versions of TYPO3
-     * internal usage
-     * 'community' => normal maintenance
-     * 'elts' => elts maintenance
-     * 'outdated' => no maintenance
-     *
-     * @var array[string][]MajorRelease
+     * Support type of the TYPO3 major release. Valid options are:
+     * 'community' (standard maintenance), 'elts' (ELTS maintenance), 'outdated' (unsupported)
      */
     private array $availableMajorReleases = [];
 
     /**
-     * Cache the TYPO3 API response in memory
-     * internal usage
-     * @var array[version][CoreRelease]
+     * In-memory cache of the API responses
      */
     private array $releasesCache = [];
 
     /**
-     * use in memory cache to reduce API calls
-     * @param string $url
-     * @return array
+     * Use in-memory cache to reduce API calls
      * @throws RemoteFetchException
      */
     protected function fetchFromRemote(string $url): array
@@ -82,8 +60,6 @@ class TYPO3CoreVersionService
 
     /**
      * Helper method to throw same exception in multiple places
-     *
-     * @param string $url
      * @throws RemoteFetchException
      */
     protected function throwFetchException(string $url): void
@@ -91,15 +67,13 @@ class TYPO3CoreVersionService
         throw new RemoteFetchException(
             'Fetching ' .
             $url .
-            ' failed. Maybe this instance can not connect to the remote system properly.',
+            ' failed. Check if the instance can establish a connection to the TYPO3 API.',
             1380897593
         );
     }
 
     /**
-     * get all TYPO3 versions grouped by maintenance state
-     *
-     * @return array{community: MajorRelease[], elts: MajorRelease[], outdated: MajorRelease[]}
+     * Returns all TYPO3 versions grouped by maintenance state
      * @throws RemoteFetchException
      */
     private function getAvailableMajorReleases(): array
@@ -113,27 +87,27 @@ class TYPO3CoreVersionService
                 'elts' => [],
                 'outdated' => [],
             ];
+
             foreach ($result as $release) {
                 $majorRelease = MajorRelease::fromApiResponse($release);
-
-                if ($majorRelease->getMaintenanceType(
-                ) !== MajorRelease::RELEASE_MAINTENANCE_OUTDATED) {
+                if ($majorRelease->getMaintenanceType() !== MajorRelease::RELEASE_MAINTENANCE_OUTDATED) {
                     $majorRelease->setCoreReleases($this->getCoreReleasesByMajorRelease($majorRelease));
                     $majorRelease->setLatestSecurityPatchRelease(
                         $this->getLatestSecurityRelevantVersionForMajor($majorRelease)
                     );
                 }
-
                 $this->availableMajorReleases[$majorRelease->getMaintenanceType()][$majorRelease->getVersion()] = $majorRelease;
             }
         }
         return $this->availableMajorReleases;
     }
 
-    public function getAllMajorReleases()
+    /**
+     * Returns all major TYPO3 releases, including supported/maintained and unsupported versions
+     */
+    public function getAllMajorReleases(): array
     {
         $majorVersions = $this->getAvailableMajorReleases();
-
         return array_merge(
             $majorVersions[MajorRelease::RELEASE_MAINTENANCE_COMMUNITY],
             $majorVersions[MajorRelease::RELEASE_MAINTENANCE_ELTS],
@@ -142,15 +116,11 @@ class TYPO3CoreVersionService
     }
 
     /**
-     * get all TYPO3 versions which are maintained
-     * normally all community and elts releases
-     *
-     * @return array{MajorRelease}
+     * Returns all currently supported/maintained major TYPO3 releases (these are typically community and ELTS releases)
      */
     public function getSupportedMajorReleases(): array
     {
         $majorVersions = $this->getAvailableMajorReleases();
-
         return array_merge(
             $majorVersions[MajorRelease::RELEASE_MAINTENANCE_COMMUNITY],
             $majorVersions[MajorRelease::RELEASE_MAINTENANCE_ELTS]
@@ -158,26 +128,20 @@ class TYPO3CoreVersionService
     }
 
     /**
-     * get all TYPO3 versions which are not maintained
-     *
-     * @return array{MajorRelease}
+     * Returns all unsupported/unmaintained ("outdated") TYPO3 releases
      */
     public function getOutdatedMajorVersions(): array
     {
         $availableMajorVersions = $this->getAvailableMajorReleases();
-
         return $availableMajorVersions[MajorRelease::RELEASE_MAINTENANCE_OUTDATED];
     }
 
     /**
-     * get all core releases of a specific version
-     * @param MajorRelease $majorRelease
-     * @return array[CoreRelease]
+     * Returns all TYPO3 Core releases of a specific version
      * @throws \TYPO3\CMS\Install\Service\Exception\RemoteFetchException
      */
-    private function getCoreReleasesByMajorRelease(
-        \SchamsNet\NagiosExtensionlist\CoreVersion\MajorRelease $majorRelease
-    ): array {
+    private function getCoreReleasesByMajorRelease(MajorRelease $majorRelease): array
+    {
         $majorReleaseVersion = $majorRelease->getVersion();
         if (!array_key_exists($majorReleaseVersion, $this->releasesCache)) {
             $url = 'major/' . $majorReleaseVersion . '/release';
@@ -193,16 +157,20 @@ class TYPO3CoreVersionService
         return $this->releasesCache[$majorReleaseVersion];
     }
 
-    private function isOutdatedMajorRelease(MajorRelease $majorVersion)
+    /**
+     * Returns true if the release is outdated, otherwise false
+     */
+    private function isOutdatedMajorRelease(MajorRelease $majorVersion): bool
     {
         $availableMajorVersions = $this->getAvailableMajorReleases();
-
         return array_key_exists($majorVersion->getVersion(), $availableMajorVersions['outdated']);
     }
 
-    private function getLatestSecurityRelevantVersionForMajor(
-        MajorRelease $majorVersion
-    ): ?CoreRelease {
+    /**
+     * Returns the latest security patch release for a specific major version
+     */
+    private function getLatestSecurityRelevantVersionForMajor(MajorRelease $majorVersion): ?CoreRelease
+    {
         $url = 'major/' . $majorVersion->getVersion() . '/release/latest/security';
         $result = $this->fetchFromRemote($url);
         return CoreRelease::fromApiResponse($result);
