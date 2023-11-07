@@ -21,7 +21,7 @@ namespace SchamsNet\NagiosExtensionlist\Controller;
 use Psr\Http\Message\ResponseInterface;
 use SchamsNet\NagiosExtensionlist\CoreVersion\MajorRelease;
 use SchamsNet\NagiosExtensionlist\Domain\Repository\ExtensionlistRepository;
-use SchamsNet\NagiosExtensionlist\Service\TYPO3CoreVersionService;
+use SchamsNet\NagiosExtensionlist\Service\Typo3CoreVersionService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Persistence\Generic\QueryResult;
@@ -87,7 +87,7 @@ class ExtensionlistController extends ActionController
     public function getInsecureTypo3CoreVersions(): array
     {
         $coreVersionService = GeneralUtility::makeInstance(
-            TYPO3CoreVersionService::class
+            Typo3CoreVersionService::class
         );
         $insecureMajorReleases = [];
         /** @var MajorRelease $version */
