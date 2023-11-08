@@ -19,14 +19,21 @@ namespace SchamsNet\NagiosExtensionlist\Service;
 use SchamsNet\NagiosExtensionlist\CoreVersion\CoreRelease;
 use SchamsNet\NagiosExtensionlist\CoreVersion\MajorRelease;
 use SchamsNet\NagiosExtensionlist\Service\Exception\RemoteFetchException;
+use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend as Cache;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 
 class Typo3CoreVersionService
 {
     /**
+     * Cache life time (14400 seconds = 4 hours)
+     */
+    protected int $cacheLifeTime = 14400;
+
+    /**
      * Base URI of the TYPO3 version REST API
      */
-    protected $apiBaseUrl = 'https://get.typo3.org/api/v1/';
+    protected string $apiBaseUrl = 'https://get.typo3.org/api/v1/';
 
     /**
      * Support type of the TYPO3 major release. Valid options are:
@@ -35,27 +42,46 @@ class Typo3CoreVersionService
     private array $availableMajorReleases = [];
 
     /**
-     * In-memory cache of the API responses
+     * @TODO
      */
-    private array $releasesCache = [];
+    private FrontendInterface $cache;
 
     /**
-     * Use in-memory cache to reduce API calls
+     * @TODO
+     */
+    private array $releases = [];
+
+    /**
+     * @TODO
+     */
+    public function __construct(FrontendInterface $cache)
+    {
+        $this->cache = $cache;
+    }
+
+    /**
+     * Fetch data from TYPO3 API or return data from cache if available
      * @throws RemoteFetchException
      */
     protected function fetchFromRemote(string $url): array
     {
-        if (!array_key_exists($url, $this->releasesCache)) {
+        $cacheHash = md5($url);
+        $releases = $this->cache->get($cacheHash);
+        if (is_array($releases) && array_key_exists($url, $releases)) {
+            // Use data from cache
+            $this->releases = $releases;
+        } else {
+            // Retrieve data from TYPO3 API
             $apiUrl = $this->apiBaseUrl . $url;
             $json = GeneralUtility::getUrl($apiUrl);
 
             if (!$json) {
                 $this->throwFetchException($url);
             }
-            $this->releasesCache[$url] = json_decode($json, true);
+            $this->releases[$url] = json_decode($json, true);
+            $this->cache->set($cacheHash, $this->releases, [], $this->cacheLifeTime);
         }
-
-        return $this->releasesCache[$url];
+        return $this->releases[$url];
     }
 
     /**
@@ -143,18 +169,18 @@ class Typo3CoreVersionService
     private function getCoreReleasesByMajorRelease(MajorRelease $majorRelease): array
     {
         $majorReleaseVersion = $majorRelease->getVersion();
-        if (!array_key_exists($majorReleaseVersion, $this->releasesCache)) {
+        if (!array_key_exists($majorReleaseVersion, $this->releases)) {
             $url = 'major/' . $majorReleaseVersion . '/release';
             $result = $this->fetchFromRemote($url);
-            $this->releasesCache[$majorReleaseVersion] = [];
+            $this->releases[$majorReleaseVersion] = [];
             foreach ($result as $release) {
                 if (!empty($release)) {
-                    $this->releasesCache[$majorReleaseVersion][] =
+                    $this->releases[$majorReleaseVersion][] =
                         CoreRelease::fromApiResponse($release);
                 }
             }
         }
-        return $this->releasesCache[$majorReleaseVersion];
+        return $this->releases[$majorReleaseVersion];
     }
 
     /**

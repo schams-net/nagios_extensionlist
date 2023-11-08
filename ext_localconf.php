@@ -14,6 +14,8 @@
  * https://www.gnu.org/licenses/gpl.html
  */
 
+use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
+use TYPO3\CMS\Core\Cache\Backend\FileBackend;
 use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
 use SchamsNet\NagiosExtensionlist\Controller\ExtensionlistController;
 
@@ -28,4 +30,11 @@ defined('TYPO3') or die();
         [ExtensionlistController::class => 'generateResponse'],
         [ExtensionlistController::class => 'generateResponse']
     );
+
+    // configure the caching framework
+    $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['nagios_extensionlist'] ??= [];
+    $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['nagios_extensionlist']['frontend'] ??= VariableFrontend::class;
+    $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['nagios_extensionlist']['backend'] ??= FileBackend::class;
+    $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['nagios_extensionlist']['options']['defaultLifetime'] ??= 14400;
+
 })();
