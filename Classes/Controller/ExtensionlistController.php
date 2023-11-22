@@ -22,6 +22,7 @@ use Psr\Http\Message\ResponseInterface;
 use SchamsNet\NagiosExtensionlist\CoreVersion\MajorRelease;
 use SchamsNet\NagiosExtensionlist\Domain\Repository\ExtensionlistRepository;
 use SchamsNet\NagiosExtensionlist\Service\Typo3CoreVersionService;
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Persistence\Generic\QueryResult;
@@ -32,6 +33,16 @@ use TYPO3\CMS\Extbase\Persistence\Generic\QueryResult;
 class ExtensionlistController extends ActionController
 {
     /**
+     * Extension configuration
+     */
+    public ExtensionConfiguration $extensionConfiguration;
+
+    /**
+     * Extension key
+     */
+    private string $extensionKey = 'nagios_extensionlist';
+
+    /**
      * Extensionlist Repository
      */
     protected $extensionlistRepository;
@@ -39,8 +50,11 @@ class ExtensionlistController extends ActionController
     /**
      * Constructor
      */
-    public function __construct(ExtensionlistRepository $extensionlistRepository)
-    {
+    public function __construct(
+        ExtensionConfiguration $extensionConfiguration,
+        ExtensionlistRepository $extensionlistRepository
+    ) {
+        $this->extensionConfiguration = $extensionConfiguration;
         $this->extensionlistRepository = $extensionlistRepository;
     }
 
@@ -86,10 +100,13 @@ class ExtensionlistController extends ActionController
      */
     public function getInsecureTypo3CoreVersions(): array
     {
+        $insecureMajorReleases = [];
+        if ($this->extensionConfiguration->get($this->extensionKey, 'featureTypo3CoreVersions') != 1) {
+            return $insecureMajorReleases;
+        }
         $coreVersionService = GeneralUtility::makeInstance(
             Typo3CoreVersionService::class
         );
-        $insecureMajorReleases = [];
         /** @var MajorRelease $version */
         foreach ($coreVersionService->getAllMajorReleases() as $version) {
             if ($version->containsInsecureReleases()) {

@@ -1,0 +1,2 @@
+# cat=features/enable; type=boolean; label=LLL:EXT:nagios_extensionlist/Resources/Private/Language/locallang.em.xlf:feature_typo3_core_versions
+featureTypo3CoreVersions = 1
