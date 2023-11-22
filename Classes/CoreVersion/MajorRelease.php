@@ -77,7 +77,6 @@ class MajorRelease
     {
         $maintenanceWindow = MaintenanceWindow::fromApiResponse($response);
         $ltsVersion = isset($response['lts']) ? (string)$response['lts'] : null;
-
         return new self((string)$response['version'], $ltsVersion, $response['title'], $maintenanceWindow);
     }
 
@@ -136,6 +135,19 @@ class MajorRelease
                 }
             }
         }
-        return implode(',', $insecureVersions);
+        return implode(',', $this->sanitizeVersions($insecureVersions));
+    }
+
+    private function sanitizeVersions(array $versions): array
+    {
+        // Remove duplicates
+        $versions = array_unique($versions);
+        // Remove invalid versions
+        foreach ($versions as $key => $version) {
+            if (preg_match('/^[0-9]{1,3}\.([0-9]{1,3}|x)\.([0-9]{1,3}|x)$/', $version) !== 1) {
+                unset($versions[$key]);
+            }
+        }
+        return $versions;
     }
 }
