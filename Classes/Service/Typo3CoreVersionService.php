@@ -26,11 +26,6 @@ use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 class Typo3CoreVersionService
 {
     /**
-     * Cache life time (14400 seconds = 4 hours)
-     */
-    protected int $cacheLifeTime = 14400;
-
-    /**
      * Base URI of the TYPO3 version REST API
      */
     protected string $apiBaseUrl = 'https://get.typo3.org/api/v1/';
@@ -79,7 +74,7 @@ class Typo3CoreVersionService
                 $this->throwFetchException($url);
             }
             $this->releases[$url] = json_decode($json, true);
-            $this->cache->set($cacheHash, $this->releases, [], $this->cacheLifeTime);
+            $this->cache->set($cacheHash, $this->releases);
         }
         return $this->releases[$url];
     }
