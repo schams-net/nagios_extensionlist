@@ -19,7 +19,6 @@ namespace SchamsNet\NagiosExtensionlist\Service;
 use SchamsNet\NagiosExtensionlist\CoreVersion\CoreRelease;
 use SchamsNet\NagiosExtensionlist\CoreVersion\MajorRelease;
 use SchamsNet\NagiosExtensionlist\Service\Exception\RemoteFetchException;
-use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend as Cache;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 
@@ -37,17 +36,17 @@ class Typo3CoreVersionService
     private array $availableMajorReleases = [];
 
     /**
-     * @TODO
+     * Contract for a Cache (frontend)
      */
     private FrontendInterface $cache;
 
     /**
-     * @TODO
+     * List of releases retrieved from the TYPO3 API
      */
     private array $releases = [];
 
     /**
-     * @TODO
+     * Constructor
      */
     public function __construct(FrontendInterface $cache)
     {
