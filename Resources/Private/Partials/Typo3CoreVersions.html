@@ -93,18 +93,16 @@ typo3-version.critical = 11.4.x
 # TYPO3 pre-releases (alpha, beta and development).
 #typo3-version.warning = alpha,beta,dev
 
-# TYPO3 Core versions with known security issues
+# ------------------------------------------------------------------------------
+# TYPO3 Core versions which are not maintained anymore or have known security vulnerabilities
 <f:for each="{insecureCoreVersions}" as="insecureMajorRelease">
-# TYPO3 version {insecureMajorRelease.title}
-<f:spaceless>
-<f:if condition="{insecureMajorRelease.maintainedUntil}">
+# {insecureMajorRelease.title}
+<f:spaceless><f:if condition="{insecureMajorRelease.maintainedUntil}">
 # End of free support: <f:format.date format="d F Y">{insecureMajorRelease.maintainedUntil}</f:format.date>
 </f:if></f:spaceless>
-<f:spaceless>
-<f:if condition="{insecureMajorRelease.eltsUntil}">
-# End of ELTS support: <f:format.date format="d F Y">{insecureMajorRelease.eltsUntil}</f:format.date>
-</f:if>
-</f:spaceless>
+<f:spaceless><f:if condition="{insecureMajorRelease.eltsUntil}">
+# End of extended long-term support (ELTS): <f:format.date format="d F Y">{insecureMajorRelease.eltsUntil}</f:format.date>
+</f:if></f:spaceless>
 typo3-version.critical = {insecureMajorRelease.nagiosString}
 </f:for>
 # ------------------------------------------------------------------------------
