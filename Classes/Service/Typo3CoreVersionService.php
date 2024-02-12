@@ -193,6 +193,6 @@ class Typo3CoreVersionService
     {
         $url = 'major/' . $majorVersion->getVersion() . '/release/latest/security';
         $result = $this->fetchFromRemote($url);
-        return CoreRelease::fromApiResponse($result);
+        return $result ? CoreRelease::fromApiResponse($result) : null;
     }
 }
