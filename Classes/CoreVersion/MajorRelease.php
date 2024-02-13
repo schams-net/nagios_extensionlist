@@ -126,7 +126,7 @@ class MajorRelease
         } else {
             foreach ($this->coreReleases as $coreRelease) {
                 $versionString = $coreRelease->getVersion();
-                if (version_compare($versionString, $this->getLts()) === -1) {
+                if (version_compare($versionString, $this->getLts() ?? '') === -1) {
                     if (mb_substr_count($versionString, '.') == 2) {
                         $insecureVersions[] = mb_substr($versionString, 0, mb_strrpos($versionString, '.')) . '.x';
                     }
