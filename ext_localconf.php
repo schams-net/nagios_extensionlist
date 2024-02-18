@@ -14,24 +14,27 @@
  * https://www.gnu.org/licenses/gpl.html
  */
 
-if (!defined('TYPO3_MODE')) {
-    die('Access denied.');
-}
+use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
+use TYPO3\CMS\Core\Cache\Backend\FileBackend;
+use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
+use SchamsNet\NagiosExtensionlist\Controller\ExtensionlistController;
 
-call_user_func(
-    function () {
-        // Register frontend plugin
-        \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-            'NagiosExtensionlist',
-            'Extensionlist',
-            [
-                \SchamsNet\NagiosExtensionlist\Controller\ExtensionlistController::class => 'listInsecureExtensions',
-            ],
-            // non-cacheable actions
-            [
-                \SchamsNet\NagiosExtensionlist\Controller\ExtensionlistController::class => 'listInsecureExtensions',
-            ],
-            \TYPO3\CMS\Extbase\Utility\ExtensionUtility::PLUGIN_TYPE_PLUGIN
-        );
-    }
-);
+defined('TYPO3') or die();
+
+(function () {
+
+    // register frontend plugin
+    ExtensionUtility::configurePlugin(
+        'NagiosExtensionlist',
+        'Extensionlist',
+        [ExtensionlistController::class => 'generateResponse'],
+        [ExtensionlistController::class => 'generateResponse']
+    );
+
+    // configure the caching framework
+    $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['nagios_extensionlist'] ??= [];
+    $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['nagios_extensionlist']['frontend'] ??= VariableFrontend::class;
+    $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['nagios_extensionlist']['backend'] ??= FileBackend::class;
+    $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['nagios_extensionlist']['options']['defaultLifetime'] ??= 14400;
+
+})();

@@ -6,6 +6,9 @@
 			<trans-unit id="extension_name" xml:space="preserve">
 				<source>Nagios Extensionlist</source>
 			</trans-unit>
+			<trans-unit id="feature_typo3_core_versions">
+				<source>TYPO3 Core Version:Access the official TYPO3 API (get.typo3.org) to retrieve details about insecure and unmaintained TYPO3 releases.</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

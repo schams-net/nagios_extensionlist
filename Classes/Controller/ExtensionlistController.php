@@ -1,5 +1,7 @@
 <?php
+
 declare(strict_types=1);
+
 namespace SchamsNet\NagiosExtensionlist\Controller;
 
 /*
@@ -16,17 +18,30 @@ namespace SchamsNet\NagiosExtensionlist\Controller;
  * https://www.gnu.org/licenses/gpl.html
  */
 
-use \Psr\Http\Message\ResponseInterface;
-use \SchamsNet\NagiosExtensionlist\Domain\Repository\ExtensionlistRepository;
-use \TYPO3\CMS\Core\Utility\GeneralUtility;
-use \TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
-use \TYPO3\CMS\Extbase\Persistence\Generic\QueryResult;
+use Psr\Http\Message\ResponseInterface;
+use SchamsNet\NagiosExtensionlist\CoreVersion\MajorRelease;
+use SchamsNet\NagiosExtensionlist\Domain\Repository\ExtensionlistRepository;
+use SchamsNet\NagiosExtensionlist\Service\Typo3CoreVersionService;
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Extbase\Persistence\Generic\QueryResult;
 
 /**
  * Extensionlist Controller
  */
 class ExtensionlistController extends ActionController
 {
+    /**
+     * Extension configuration
+     */
+    public ExtensionConfiguration $extensionConfiguration;
+
+    /**
+     * Extension key
+     */
+    private string $extensionKey = 'nagios_extensionlist';
+
     /**
      * Extensionlist Repository
      */
@@ -35,17 +50,22 @@ class ExtensionlistController extends ActionController
     /**
      * Constructor
      */
-    public function __construct(ExtensionlistRepository $extensionlistRepository)
-    {
+    public function __construct(
+        ExtensionConfiguration $extensionConfiguration,
+        ExtensionlistRepository $extensionlistRepository
+    ) {
+        $this->extensionConfiguration = $extensionConfiguration;
         $this->extensionlistRepository = $extensionlistRepository;
     }
 
     /**
-     * Generates list of insecure extensions.
+     * Generates list of insecure TYPO3 Core versions and TYPO3 extensions.
      */
-    public function listInsecureExtensionsAction(): ResponseInterface
+    public function generateResponseAction(): ResponseInterface
     {
-        $insecureExtensions = $this->extensionlistRepository->findByReviewState(-1);
+        $insecureTypo3CoreVersions = $this->getInsecureTypo3CoreVersions();
+
+        $insecureExtensions = $this->getInsecureExtensions();
         $insecureExtensionsAndVersionCsv = $this->convertVersionsToCommaSeparatedValues($insecureExtensions);
 
         // Determine status of extension list by retrieving most recent record
@@ -65,13 +85,44 @@ class ExtensionlistController extends ActionController
                     'extensionCountLastUpdated' => $lastUpdated,
                     'extensionCountInsecureExtensions' => count($insecureExtensionsAndVersionCsv),
                     'extensionCountInsecureVersions' => $insecureExtensions->count(),
-                    'extensionlist' => $insecureExtensionsAndVersionCsv
+                    'extensionlist' => $insecureExtensionsAndVersionCsv,
+                    'insecureCoreVersions' => $insecureTypo3CoreVersions,
                 ]
             );
         } else {
             $this->view->assign('configurationError', true);
         }
         return $this->htmlResponse();
+    }
+
+    /**
+     * Returns an array of (major) TYPO3 Core versions and their insecure releases (comma-separated).
+     */
+    public function getInsecureTypo3CoreVersions(): array
+    {
+        $insecureMajorReleases = [];
+        if ($this->extensionConfiguration->get($this->extensionKey, 'featureTypo3CoreVersions') != 1) {
+            return $insecureMajorReleases;
+        }
+        $coreVersionService = GeneralUtility::makeInstance(
+            Typo3CoreVersionService::class
+        );
+        /** @var MajorRelease $version */
+        foreach ($coreVersionService->getAllMajorReleases() as $version) {
+            if ($version->containsInsecureReleases()) {
+                $insecureMajorReleases[$version->getVersion()] = $version;
+            }
+        }
+
+        return $insecureMajorReleases;
+    }
+
+    /**
+     * Returns a list of insecure extensions.
+     */
+    public function getInsecureExtensions(): QueryResult
+    {
+        return $this->extensionlistRepository->findByReviewState(-1);
     }
 
     /**
@@ -96,7 +147,7 @@ class ExtensionlistController extends ActionController
             $extensionlist[$key] = [
                 'extensionKey' => $key,
                 'title' => $title,
-                'versionList' => $versionList
+                'versionList' => $versionList,
             ];
         }
 

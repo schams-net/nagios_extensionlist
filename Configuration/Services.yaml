@@ -8,3 +8,13 @@ services:
   SchamsNet\NagiosExtensionlist\:
     resource: '../Classes/*'
     exclude: '../Classes/Domain/Model/*'
+
+  cache.nagios_extensionlist:
+    class: TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
+    factory: ['@TYPO3\CMS\Core\Cache\CacheManager', 'getCache']
+    arguments: ['nagios_extensionlist']
+
+  SchamsNet\NagiosExtensionlist\Service\Typo3CoreVersionService:
+    public: true
+    arguments:
+      $cache: '@cache.nagios_extensionlist'
