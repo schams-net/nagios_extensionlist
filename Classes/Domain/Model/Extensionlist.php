@@ -1,5 +1,7 @@
 <?php
+
 declare(strict_types=1);
+
 namespace SchamsNet\NagiosExtensionlist\Domain\Model;
 
 /*
@@ -16,7 +18,7 @@ namespace SchamsNet\NagiosExtensionlist\Domain\Model;
  * https://www.gnu.org/licenses/gpl.html
  */
 
-use \TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 
 /**
  * Model: Extensionlist

@@ -1,5 +1,7 @@
 <?php
 
+use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
+
 /*
  * This file is part of the TYPO3 Extension "Nagios Extensionlist"
  *
@@ -13,10 +15,9 @@
  * For the full copyright and license information, please see
  * https://www.gnu.org/licenses/gpl.html
  */
-
 call_user_func(function () {
     // Register the plugin
-    \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
+    ExtensionUtility::registerPlugin(
         'NagiosExtensionlist',
         'Extensionlist',
         'Nagios Extensionlist',
