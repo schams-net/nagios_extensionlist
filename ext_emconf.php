@@ -20,7 +20,6 @@ $EM_CONF[$_EXTKEY] = [
     'category' => 'fe',
     'version' => '2.5.0',
     'state' => 'stable',
-    'clearCacheOnLoad' => false,
     'author' => 'Michael Schams (schams.net)',
     'author_email' => 'schams.net',
     'author_company' => 'https://schams.net',
