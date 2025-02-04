@@ -1,5 +1,7 @@
 <?php
+
 declare(strict_types=1);
+
 namespace SchamsNet\NagiosExtensionlist\Domain\Repository;
 
 /*
@@ -17,9 +19,9 @@ namespace SchamsNet\NagiosExtensionlist\Domain\Repository;
  */
 
 use SchamsNet\NagiosExtensionlist\Domain\Repository\Traits\ExtensionlistTrait;
-use \TYPO3\CMS\Extbase\Persistence\QueryInterface;
-use \TYPO3\CMS\Extbase\Persistence\Repository;
-use \TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
+use TYPO3\CMS\Extbase\Persistence\QueryInterface;
+use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
+use TYPO3\CMS\Extbase\Persistence\Repository;
 
 /**
  * Repository: Extensionlist
@@ -33,7 +35,7 @@ class ExtensionlistRepository extends Repository
      */
     protected $defaultOrderings = [
         'extension_key' => QueryInterface::ORDER_ASCENDING,
-        'integer_version' => QueryInterface::ORDER_ASCENDING
+        'integer_version' => QueryInterface::ORDER_ASCENDING,
     ];
 
     /**

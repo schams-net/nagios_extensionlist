@@ -20,14 +20,13 @@ $EM_CONF[$_EXTKEY] = [
     'category' => 'fe',
     'version' => '2.5.0',
     'state' => 'stable',
-    'clearCacheOnLoad' => false,
     'author' => 'Michael Schams (schams.net)',
     'author_email' => 'schams.net',
     'author_company' => 'https://schams.net',
     'constraints' => [
         'depends' => [
-            'php' => '7.4.0-8.2.99',
-            'typo3' => '11.5.0-11.5.99',
+            'php' => '7.4.0-8.3.99',
+            'typo3' => '11.5.0-12.4.99',
         ],
         'conflicts' => [
         ],
