@@ -3,14 +3,14 @@
 	"description": "Generates a list of insecure extensions for EXT:nagios based on the extension list in the current TYPO3 instance.",
 	"type": "typo3-cms-extension",
 	"require": {
-		"typo3/cms-core": "^12",
-		"typo3/cms-frontend":"^12",
-		"typo3/cms-backend": "^12",
-		"typo3/cms-scheduler": "^12",
-		"typo3/cms-extensionmanager": "^12",
-		"typo3/cms-setup": "^12",
-		"typo3/cms-extbase": "^12",
-		"typo3/cms-fluid": "^12"
+		"typo3/cms-core": "^12 || ^13",
+		"typo3/cms-frontend":"^12 || ^13",
+		"typo3/cms-backend": "^12 || ^13",
+		"typo3/cms-scheduler": "^12 || ^13",
+		"typo3/cms-extensionmanager": "^12 || ^13",
+		"typo3/cms-setup": "^12 || ^13",
+		"typo3/cms-extbase": "^12 || ^13",
+		"typo3/cms-fluid": "^12 || ^13"
 	},
 	"require-dev": {
 		"ergebnis/composer-normalize": "*",
