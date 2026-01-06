@@ -24,7 +24,7 @@ for insecure TYPO3 instances. See https://schams.net/nagios for further details.
 
 ## License
 
-(c) 2018-2025 Michael Schams (schams.net), all rights reserved
+(c) 2018-2026 Michael Schams (schams.net), all rights reserved
 
 This software free software; you can redistribute it and/or modify it under the terms of the GNU General
 Public License, either version 2 of the License, or any later version. For the full copyright and license
