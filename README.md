@@ -15,7 +15,7 @@ for insecure TYPO3 instances. See https://schams.net/nagios for further details.
 
 ## System Requirements
 
-* TYPO3 version 12 LTS
+* TYPO3 version 12 LTS or 13 LTS
 * PHP version 8.x
 
 ## Installation
