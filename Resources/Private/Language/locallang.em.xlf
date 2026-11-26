@@ -9,6 +9,18 @@
 			<trans-unit id="feature_typo3_core_versions">
 				<source>TYPO3 Core Version:Access the official TYPO3 API (get.typo3.org) to retrieve details about insecure and unmaintained TYPO3 releases.</source>
 			</trans-unit>
+			<trans-unit id="storage_uid">
+				<source>File storage: UID of the (local) file storage (sys_file_storage) the command "nagios:extensionlist:write" writes the configuration file to (empty = default storage).</source>
+			</trans-unit>
+			<trans-unit id="configuration_file">
+				<source>Configuration file: Path and file name within the file storage. The file is delivered by the web server without TYPO3.</source>
+			</trans-unit>
+			<trans-unit id="source_site_identifier">
+				<source>Source site: Identifier of the site the command fetches the generated configuration from (empty = first site).</source>
+			</trans-unit>
+			<trans-unit id="source_path">
+				<source>Source path: Path (relative to the site base) which delivers the generated configuration (page type of the frontend plugin).</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
