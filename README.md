@@ -22,6 +22,31 @@ for insecure TYPO3 instances. See https://schams.net/nagios for further details.
 
 *(not documented yet)*
 
+## Static configuration file
+
+By default, the configuration file is generated on-the-fly by a frontend plugin (page type). If TYPO3 has a
+problem at the time Nagios fetches the file, Nagios receives an error page instead of a valid configuration.
+
+The console command `nagios:extensionlist:write` fetches the generated configuration and stores it as a static
+file in a local file storage (default: `nagios/check_typo3.cfg` in the default storage, usually
+`fileadmin/nagios/check_typo3.cfg`), which the web server delivers
+without TYPO3. Configure it as a scheduler task ("Execute console commands") running after the task that
+updates the extension list (`extensionmanager:extension:list:update`).
+
+* The response is validated; error pages or incomplete responses never overwrite an existing file.
+* The file is only rewritten if `extensionlist.count.latest-extension-upload.timestamp` has changed, or
+  at the latest after `--max-age` hours (default: 24). `--force` always rewrites the file.
+* `--url` overrides the source URL.
+
+Extension configuration:
+
+| Setting                | Default                            | Description                                                   |
+|------------------------|------------------------------------|---------------------------------------------------------------|
+| `storageUid`           | *(empty = default storage)*        | UID of the local file storage (`sys_file_storage`)            |
+| `configurationFile`    | `nagios/check_typo3.cfg`           | Target path and file name within the file storage             |
+| `sourceSiteIdentifier` | *(empty = first site)*             | Site whose base URL is used to fetch the generated file       |
+| `sourcePath`           | `check_typo3.txt`                  | Path (relative to the site base) of the plugin's page type    |
+
 ## License
 
 (c) 2018-2025 Michael Schams (schams.net), all rights reserved

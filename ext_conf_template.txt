@@ -1,2 +1,14 @@
 # cat=features/enable; type=boolean; label=LLL:EXT:nagios_extensionlist/Resources/Private/Language/locallang.em.xlf:feature_typo3_core_versions
 featureTypo3CoreVersions = 1
+
+# cat=file; type=int; label=LLL:EXT:nagios_extensionlist/Resources/Private/Language/locallang.em.xlf:storage_uid
+storageUid =
+
+# cat=file; type=string; label=LLL:EXT:nagios_extensionlist/Resources/Private/Language/locallang.em.xlf:configuration_file
+configurationFile = nagios/check_typo3.cfg
+
+# cat=file; type=string; label=LLL:EXT:nagios_extensionlist/Resources/Private/Language/locallang.em.xlf:source_site_identifier
+sourceSiteIdentifier =
+
+# cat=file; type=string; label=LLL:EXT:nagios_extensionlist/Resources/Private/Language/locallang.em.xlf:source_path
+sourcePath = check_typo3.txt

@@ -18,3 +18,10 @@ services:
     public: true
     arguments:
       $cache: '@cache.nagios_extensionlist'
+
+  SchamsNet\NagiosExtensionlist\Command\WriteConfigurationFileCommand:
+    tags:
+      - name: 'console.command'
+        command: 'nagios_extensionlist:write'
+        description: 'Fetches the generated Nagios configuration and stores it as static file (default: fileadmin/nagios/check_typo3.cfg)'
+        schedulable: true
